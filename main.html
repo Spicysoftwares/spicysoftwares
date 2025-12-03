@@ -34,42 +34,40 @@
         margin: 0;
     }
 
-    /* Section réduite et alignée à gauche */
     .section {
-        width: 320px;
-        text-align: left;
-        padding: 20px;
-        margin-left: 20px;
-        margin-top: 30px;
+        max-width: 900px;
+        margin: auto;
+        text-align: center;
+        padding: 40px 20px;
     }
 
     .section h2 {
-        font-size: 20pt;
+        font-size: 32pt;
         color: #333;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
 
     .section h3 {
-        font-size: 12pt;
+        font-size: 20pt;
         color: #777;
-        margin-top: -5px;
+        margin-top: -10px;
     }
 
     .section img {
         width: 100%;
-        max-width: 250px;
+        max-width: 700px;
         border-radius: 10px;
-        margin-top: 15px;
+        margin-top: 20px;
     }
 
     .download-btn {
         display: inline-block;
-        margin-top: 15px;
+        margin-top: 25px;
         background: #7a7a7a;
-        padding: 10px 20px;
+        padding: 15px 30px;
         color: white;
         border-radius: 8px;
-        font-size: 12pt;
+        font-size: 16pt;
         text-decoration: none;
         transition: 0.2s;
     }
@@ -78,10 +76,20 @@
         background: #9a9a9a;
     }
 
-    .version {
-        margin-top: 8px;
-        font-size: 11pt;
-        color: #555;
+    .kofi-btn {
+        display: inline-block;
+        margin: 30px auto 0 auto;
+        background: #0080ff;
+        padding: 15px 35px;
+        color: white;
+        border-radius: 8px;
+        font-size: 16pt;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .kofi-btn:hover {
+        background: #3399ff;
     }
 
     .footer {
@@ -89,7 +97,6 @@
         padding: 20px;
         color: #666;
         font-size: 12pt;
-        margin-top: 40px;
     }
 </style>
 </head>
@@ -107,13 +114,16 @@
 
     <img src="RenderCore.png" alt="RenderCore">
 
-    <p style="font-size:12pt; margin-top:15px;">
-        3D Game Engine
+    <p style="font-size:14pt; margin-top:25px;">
+        3D Game engine
     </p>
 
     <a href="RenderCore.zip" class="download-btn">Download</a>
 
-    <div class="version">Version 0.0.3 alpha</div>
+    <br>
+
+    <!-- KO-FI BUTTON -->
+    <a href="https://ko-fi.com/renderon" class="kofi-btn">Support us on Ko-Fi</a>
 </div>
 
 <div class="footer">
