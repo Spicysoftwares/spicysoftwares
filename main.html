@@ -16,7 +16,16 @@
     header {
         background: #565656;
         padding: 15px;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative; /* permet de placer le logo à gauche */
+    }
+
+    header img.logo {
+        position: absolute;
+        left: 20px;
+        height: 40px;
     }
 
     header h1 {
@@ -79,6 +88,7 @@
 <body>
 
 <header>
+    <img src="radeonlogo.png" class="logo" alt="Logo Renderon">
     <h1>Renderon</h1>
 </header>
 
