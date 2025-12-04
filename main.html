@@ -6,6 +6,7 @@
     <title>Renderon - RenderCore</title>
 
     <style>
+    /* --- Ton CSS Original --- */
     body {
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
@@ -34,7 +35,7 @@
         margin: 0;
     }
 
-    /* ---- NEW NAVBAR ---- */
+    /* ---- NEW NAVBAR (Dropdowns) ---- */
     .navbar {
         background: #3a3a3a;
         padding: 10px 20px;
@@ -152,7 +153,50 @@
         color: #666;
         font-size: 12pt;
     }
-</style>
+
+    /* ---- CSS AJOUTÉ POUR LE FORMULAIRE --- */
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        text-align: left;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #565656;
+    }
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box; /* Important pour que le padding n'augmente pas la largeur */
+    }
+    textarea.form-control {
+        height: 150px;
+        resize: vertical;
+    }
+    .submit-btn {
+        background: #0080ff;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16pt;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .submit-btn:hover {
+        background: #3399ff;
+    }
+    </style>
 </head>
 
 <body>
@@ -162,13 +206,19 @@
     <h1>Renderon Softwares</h1>
 </header>
 
-<!-- NEW NAVBAR -->
 <div class="navbar">
     <div class="dropdown">
         <button class="dropdown-btn">Softwares</button>
         <div class="dropdown-content">
             <a href="rendercore.html">RenderCore</a>
-        </div>
+            </div>
+    </div>
+    
+    <div class="dropdown">
+        <button class="dropdown-btn">Support</button>
+        <div class="dropdown-content">
+            <a href="support.html">Contact us</a>
+            </div>
     </div>
 </div>
 
