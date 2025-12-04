@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renderon - Support Contact</title>
+    
+    <style>
+    /* Copie des styles nécessaires du fichier principal (index.html/main.html) */
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #ffffff; color: #333; }
+    header { background: #565656; padding: 15px; display: flex; align-items: center; justify-content: center; position: relative; }
+    header h1 { color: white; font-size: 28pt; margin: 0; }
+    .navbar { background: #3a3a3a; padding: 10px 20px; }
+    .navbar a { color: white; text-decoration: none; padding: 10px 15px; }
+    .navbar a:hover { background: #4a4a4a; border-radius: 5px; }
+    .form-container { max-width: 600px; margin: 40px auto; padding: 30px; border: 1px solid #ddd; border-radius: 10px; text-align: left; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #565656; }
+    .form-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    textarea.form-control { height: 150px; resize: vertical; }
+    .submit-btn { background: #0080ff; color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 16pt; cursor: pointer; transition: 0.2s; }
+    .submit-btn:hover { background: #3399ff; }
+    .footer { text-align: center; padding: 20px; color: #666; font-size: 12pt; }
+    /* Message d'urgence */
+    .alert-message {
+        text-align: center;
+        margin-top: 30px;
+        padding: 15px;
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        border-radius: 5px;
+        font-size: 14pt;
+    }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Renderon Softwares</h1>
+</header>
+
+<div class="navbar">
+    <a href="index.html">← Back to Home</a>
+</div>
+
+<div class="form-container">
+    <h2 style="text-align: center; color: #565656;">Contact Support</h2>
+    <p style="text-align: center; color: #777;">We aim to respond as soon as possible via the email address you provide.</p>
+    
+    <form action="https://formspree.io/f/YOUR_FORMSPREE_IDENTIFIER" method="POST">
+
+        <div class="form-group">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="_replyto" class="form-control" placeholder="support@renderon.net will receive this message" required>
+        </div>
+
+        <div class="form-group">
+            <label for="reason">Subject / Reason for Contact:</label>
+            <input type="text" id="subject" name="_subject" class="form-control" placeholder="Ex: RenderCore Download Issue" required>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" class="form-control" required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" style="width: 100%;">Send Message</button>
+    </form>
+    
+    <div class="alert-message">
+        ⚠️ **If we don't respond under 48 hours, please contact us directly by email at:** support@renderon.net
+    </div>
+</div>
+
+<div class="footer">
+    © 2025 Renderon — support : support@renderon.net
+</div>
+
+</body>
+</html>
