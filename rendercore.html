@@ -6,82 +6,279 @@
     <title>Renderon - RenderCore Download</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: #ffffff;
-        color: #333;
-    }
+/* --- NOUVEAU THÈME NOIR & BLANC : Minimaliste, Arrondi, Pro --- */
+:root {
+    --color-primary: #000000;      /* Noir principal */
+    --color-secondary: #ffffff;    /* Blanc principal */
+    --color-text-light: #f0f0f0;   /* Texte sur fond sombre */
+    --color-text-dark: #333333;    /* Texte sur fond clair */
+    --color-accent: #7a7a7a;       /* Gris pour les boutons et accents */
+    --color-hover: #5a5a5a;        /* Gris foncé pour le survol */
+    --color-border: #cccccc;       /* Gris clair pour les bordures */
+    --border-radius: 12px;         /* Rayon d'arrondi général */
+    --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
 
-    header {
-        background: #565656;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--color-secondary);
+    color: var(--color-text-dark);
+    line-height: 1.6;
+}
 
-    header img.logo {
-        position: absolute;
-        left: 20px;
-        height: 40px;
-    }
+/* --- En-tête (Header) --- */
+header {
+    background: var(--color-primary);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-    header h1 {
-        color: white;
-        font-size: 28pt;
-        margin: 0;
-    }
+header img.logo {
+    position: absolute;
+    left: 40px;
+    height: 35px;
+    filter: invert(100%); /* Rend le logo blanc */
+}
 
-    .section {
-        max-width: 900px;
-        margin: auto;
-        text-align: center;
-        padding: 40px 20px;
-    }
+header h1 {
+    color: var(--color-text-light);
+    font-size: 24pt;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin: 0;
+}
 
-    .section h2 {
-        font-size: 32pt;
-        color: #333;
-        margin-bottom: 10px;
-    }
+/* ---- Barre de Navigation (Navbar) ---- */
+.navbar {
+    background: var(--color-accent);
+    padding: 0; /* Padding est dans les boutons */
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
 
-    .section h3 {
-        font-size: 20pt;
-        color: #777;
-        margin-top: -10px;
-    }
+.dropdown, .navbar a {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+}
 
-    .section img {
-        width: 100%;
-        max-width: 700px;
-        border-radius: 10px;
-        margin-top: 20px;
-    }
+.dropdown-btn, .navbar a {
+    background: transparent;
+    color: var(--color-text-light);
+    font-size: 14pt;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    padding: 15px 30px;
+    transition: background 0.2s, color 0.2s;
+}
 
-    .download-btn {
-        display: inline-block;
-        margin-top: 25px;
-        background: #7a7a7a;
-        padding: 15px 30px;
-        color: white;
-        border-radius: 8px;
-        font-size: 16pt;
-        text-decoration: none;
-        transition: 0.2s;
-    }
+.dropdown-btn:hover, .navbar a:hover {
+    background: var(--color-hover);
+    color: var(--color-secondary);
+}
 
-    .download-btn:hover {
-        background: #9a9a9a;
-    }
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background: var(--color-hover);
+    min-width: 180px;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: var(--box-shadow-light);
+}
 
-    .footer {
-        text-align: center;
-        padding: 20px;
-        color: #666;
-        font-size: 12pt;
-    }
+.dropdown-content a {
+    color: var(--color-text-light);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 12pt;
+    font-weight: 400;
+}
+
+.dropdown-content a:hover {
+    background: var(--color-primary);
+    color: var(--color-secondary);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* --- Contenu Principal (Section) --- */
+.section {
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.section h2 {
+    font-size: 40pt;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.section h3 {
+    font-size: 18pt;
+    color: var(--color-accent);
+    margin-top: 0;
+    font-weight: 300;
+}
+
+.section img {
+    width: 100%;
+    max-width: 800px;
+    border-radius: var(--border-radius);
+    margin-top: 30px;
+    box-shadow: var(--box-shadow-light);
+}
+
+.section p {
+    font-size: 16pt;
+    margin-top: 30px;
+}
+
+/* --- Boutons --- */
+.download-btn, .kofi-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 18px 40px;
+    color: var(--color-secondary);
+    border-radius: var(--border-radius);
+    font-size: 16pt;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.download-btn {
+    background: var(--color-primary);
+}
+
+.download-btn:hover {
+    background: var(--color-hover);
+}
+
+.kofi-btn {
+    background: #000000; /* Le Ko-Fi peut garder une couleur d'accent s'il doit ressortir, mais ici on le met en noir */
+    margin: 30px auto 0 auto;
+    border: 2px solid var(--color-accent);
+}
+
+.kofi-btn:hover {
+    background: var(--color-hover);
+    border-color: var(--color-primary);
+}
+
+/* --- Pied de Page (Footer) --- */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--color-accent);
+    font-size: 11pt;
+    border-top: 1px solid var(--color-border);
+}
+
+/* ---- Styles de Formulaire (pour support.html) --- */
+.form-container {
+    max-width: 650px;
+    margin: 60px auto;
+    padding: 40px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background: var(--color-secondary);
+    box-shadow: var(--box-shadow-light);
+    text-align: left;
+}
+.form-container h2 {
+    color: var(--color-primary);
+    font-size: 30pt;
+    font-weight: 500;
+    margin-top: 0;
+}
+.form-container p {
+    color: var(--color-accent);
+    font-size: 14pt;
+    margin-bottom: 30px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-primary);
+    font-size: 12pt;
+}
+.form-control {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    font-size: 14pt;
+    transition: border-color 0.2s;
+}
+.form-control:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+textarea.form-control {
+    height: 180px;
+    resize: vertical;
+}
+.submit-btn {
+    background: var(--color-primary);
+    color: var(--color-secondary);
+    padding: 15px 30px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16pt;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.submit-btn:hover {
+    background: var(--color-hover);
+}
+
+/* Message d'urgence */
+.alert-message {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: #fcf8e3; /* Jaune très pâle, subtil */
+    color: #8a6d3b; /* Texte marron/doré */
+    border: 1px solid #faebcc;
+    border-radius: var(--border-radius);
+    font-size: 12pt;
+}
+/* Style pour le bouton retour dans la navbar de support.html et rendercore.html */
+.navbar .back-link {
+    display: inline-block;
+    padding: 15px 30px;
+    color: var(--color-text-light);
+    font-size: 14pt;
+    font-weight: 500;
+    text-decoration: none;
+}
+.navbar .back-link:hover {
+    background: var(--color-hover);
+}
 </style>
 </head>
 
@@ -92,16 +289,20 @@
     <h1>RenderCore Download</h1>
 </header>
 
+<div class="navbar">
+    <a href="index.html" class="back-link">← Back to Home</a>
+</div>
+
 <div class="section">
     <h2>RenderCore</h2>
-    <h3>Download page</h3>
+    <h3>Download the latest version</h3>
 
     <img src="rendercore.png" alt="RenderCore Screenshot 1">
     <img src="rendercore2.png" alt="RenderCore Screenshot 2">
     <img src="rendercore3.png" alt="RenderCore Screenshot 3">
 
-    <p style="font-size:14pt; margin-top:25px;">
-        Click below to download RenderCore:
+    <p>
+        The engine is free to use and distribute. Click below to download the latest stable release:
     </p>
 
     <a href="RenderCore.zip" class="download-btn">Download RenderCore.zip</a>
