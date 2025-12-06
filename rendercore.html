@@ -6,16 +6,16 @@
     <title>Renderon - RenderCore Download</title>
 
 <style>
-/* --- NOUVEAU THÈME NOIR & BLANC : Minimaliste, Arrondi, Pro --- */
+/* --- BLACK & WHITE THEME: Minimalist, Rounded, Professional --- */
 :root {
-    --color-primary: #000000;      /* Noir principal */
-    --color-secondary: #ffffff;    /* Blanc principal */
-    --color-text-light: #f0f0f0;   /* Texte sur fond sombre */
-    --color-text-dark: #333333;    /* Texte sur fond clair */
-    --color-accent: #7a7a7a;       /* Gris pour les boutons et accents */
-    --color-hover: #5a5a5a;        /* Gris foncé pour le survol */
-    --color-border: #cccccc;       /* Gris clair pour les bordures */
-    --border-radius: 12px;         /* Rayon d'arrondi général */
+    --color-primary: #000000;      /* Primary black */
+    --color-secondary: #ffffff;    /* Primary white */
+    --color-text-light: #f0f0f0;   /* Text on dark background */
+    --color-text-dark: #333333;    /* Text on light background */
+    --color-accent: #7a7a7a;       /* Gray for buttons and accents */
+    --color-hover: #5a5a5a;        /* Dark gray for hover */
+    --color-border: #cccccc;       /* Light gray for borders */
+    --border-radius: 12px;         /* General border radius */
     --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -27,7 +27,7 @@ body {
     line-height: 1.6;
 }
 
-/* --- En-tête (Header) --- */
+/* --- Header --- */
 header {
     background: var(--color-primary);
     padding: 20px 0;
@@ -42,7 +42,7 @@ header img.logo {
     position: absolute;
     left: 40px;
     height: 35px;
-    filter: invert(100%); /* Rend le logo blanc */
+    filter: invert(100%); /* Makes logo white */
 }
 
 header h1 {
@@ -53,10 +53,10 @@ header h1 {
     margin: 0;
 }
 
-/* ---- Barre de Navigation (Navbar) ---- */
+/* ---- Navigation Bar (Navbar) ---- */
 .navbar {
     background: var(--color-accent);
-    padding: 0; /* Padding est dans les boutons */
+    padding: 0;
     display: flex;
     justify-content: center;
     gap: 0;
@@ -113,7 +113,20 @@ header h1 {
     display: block;
 }
 
-/* --- Contenu Principal (Section) --- */
+.navbar .back-link {
+    display: inline-block;
+    padding: 15px 30px;
+    color: var(--color-text-light);
+    font-size: 14pt;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.navbar .back-link:hover {
+    background: var(--color-hover);
+}
+
+/* --- Main Content (Section) --- */
 .section {
     max-width: 1000px;
     margin: auto;
@@ -148,8 +161,8 @@ header h1 {
     margin-top: 30px;
 }
 
-/* --- Boutons --- */
-.download-btn, .kofi-btn {
+/* --- Buttons --- */
+.download-btn, .kofi-btn, .info-btn {
     display: inline-block;
     margin-top: 25px;
     padding: 18px 40px;
@@ -170,8 +183,17 @@ header h1 {
     background: var(--color-hover);
 }
 
+.info-btn {
+    background: var(--color-accent);
+    margin-left: 15px;
+}
+
+.info-btn:hover {
+    background: var(--color-hover);
+}
+
 .kofi-btn {
-    background: #000000; /* Le Ko-Fi peut garder une couleur d'accent s'il doit ressortir, mais ici on le met en noir */
+    background: #000000;
     margin: 30px auto 0 auto;
     border: 2px solid var(--color-accent);
 }
@@ -181,7 +203,7 @@ header h1 {
     border-color: var(--color-primary);
 }
 
-/* --- Pied de Page (Footer) --- */
+/* --- Footer --- */
 .footer {
     text-align: center;
     padding: 20px;
@@ -190,7 +212,7 @@ header h1 {
     border-top: 1px solid var(--color-border);
 }
 
-/* ---- Styles de Formulaire (pour support.html) --- */
+/* ---- Form Styles (for support.html) --- */
 .form-container {
     max-width: 650px;
     margin: 60px auto;
@@ -256,28 +278,16 @@ textarea.form-control {
     background: var(--color-hover);
 }
 
-/* Message d'urgence */
+/* Alert message */
 .alert-message {
     text-align: center;
     margin-top: 30px;
     padding: 20px;
-    background: #fcf8e3; /* Jaune très pâle, subtil */
-    color: #8a6d3b; /* Texte marron/doré */
+    background: #fcf8e3;
+    color: #8a6d3b;
     border: 1px solid #faebcc;
     border-radius: var(--border-radius);
     font-size: 12pt;
-}
-/* Style pour le bouton retour dans la navbar de support.html et rendercore.html */
-.navbar .back-link {
-    display: inline-block;
-    padding: 15px 30px;
-    color: var(--color-text-light);
-    font-size: 14pt;
-    font-weight: 500;
-    text-decoration: none;
-}
-.navbar .back-link:hover {
-    background: var(--color-hover);
 }
 </style>
 </head>
@@ -306,10 +316,11 @@ textarea.form-control {
     </p>
 
     <a href="RenderCore.zip" class="download-btn">Download RenderCore.zip</a>
+    <a href="scriptsystem.html" class="info-btn">Learn About Script System</a>
 </div>
 
 <div class="footer">
-    © 2025 Renderon — support : support@renderon.net
+    © 2025 Renderon — support: support@renderon.net
 </div>
 
 </body>
