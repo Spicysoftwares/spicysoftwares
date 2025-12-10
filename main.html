@@ -6,16 +6,15 @@
     <title>Renderon - RenderCore</title>
 
     <style>
-/* --- NOUVEAU THÈME NOIR & BLANC : Minimaliste, Arrondi, Pro --- */
 :root {
-    --color-primary: #000000;      /* Noir principal */
-    --color-secondary: #ffffff;    /* Blanc principal */
-    --color-text-light: #f0f0f0;   /* Texte sur fond sombre */
-    --color-text-dark: #333333;    /* Texte sur fond clair */
-    --color-accent: #7a7a7a;       /* Gris pour les boutons et accents */
-    --color-hover: #5a5a5a;        /* Gris foncé pour le survol */
-    --color-border: #cccccc;       /* Gris clair pour les bordures */
-    --border-radius: 12px;         /* Rayon d'arrondi général */
+    --color-primary: #000000;
+    --color-secondary: #ffffff;
+    --color-text-light: #f0f0f0;
+    --color-text-dark: #333333;
+    --color-accent: #7a7a7a;
+    --color-hover: #5a5a5a;
+    --color-border: #cccccc;
+    --border-radius: 12px;
     --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -27,7 +26,6 @@ body {
     line-height: 1.6;
 }
 
-/* --- En-tête (Header) --- */
 header {
     background: var(--color-primary);
     padding: 20px 0;
@@ -36,13 +34,14 @@ header {
     justify-content: center;
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
 
 header img.logo {
     position: absolute;
     left: 40px;
     height: 35px;
-    filter: invert(100%); /* Rend le logo blanc */
+    filter: invert(100%);
 }
 
 header h1 {
@@ -53,13 +52,15 @@ header h1 {
     margin: 0;
 }
 
-/* ---- Barre de Navigation (Navbar) ---- */
 .navbar {
     background: var(--color-accent);
-    padding: 0; /* Padding est dans les boutons */
+    padding: 0;
     display: flex;
     justify-content: center;
     gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 99;
 }
 
 .dropdown, .navbar a {
@@ -113,171 +114,242 @@ header h1 {
     display: block;
 }
 
-/* --- Contenu Principal (Section) --- */
-.section {
-    max-width: 1000px;
-    margin: auto;
+/* Hero Section with Blurred Background */
+.hero-section {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--color-secondary);
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('RenderCore.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px) brightness(0.4);
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
     text-align: center;
     padding: 60px 20px;
+    max-width: 900px;
 }
 
-.section h2 {
-    font-size: 40pt;
-    color: var(--color-primary);
-    margin-bottom: 5px;
+.hero-content h2 {
+    font-size: 52pt;
     font-weight: 700;
+    margin: 0 0 10px 0;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-.section h3 {
+.hero-content .version {
     font-size: 18pt;
-    color: var(--color-accent);
-    margin-top: 0;
     font-weight: 300;
+    opacity: 0.9;
+    margin-bottom: 30px;
 }
 
-.section img {
-    width: 100%;
-    max-width: 800px;
-    border-radius: var(--border-radius);
-    margin-top: 30px;
-    box-shadow: var(--box-shadow-light);
+.hero-content .tagline {
+    font-size: 22pt;
+    font-weight: 400;
+    margin-bottom: 40px;
+    line-height: 1.4;
 }
 
-.section p {
-    font-size: 16pt;
-    margin-top: 30px;
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-/* --- Boutons --- */
 .download-btn, .kofi-btn {
     display: inline-block;
-    margin-top: 25px;
     padding: 18px 40px;
     color: var(--color-secondary);
     border-radius: var(--border-radius);
     font-size: 16pt;
     text-decoration: none;
     font-weight: bold;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .download-btn {
     background: var(--color-primary);
+    border: 2px solid var(--color-secondary);
 }
 
 .download-btn:hover {
-    background: var(--color-hover);
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
 .kofi-btn {
-    background: #000000; /* Le Ko-Fi peut garder une couleur d'accent s'il doit ressortir, mais ici on le met en noir */
-    margin: 30px auto 0 auto;
-    border: 2px solid var(--color-accent);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--color-secondary);
+    backdrop-filter: blur(10px);
 }
 
 .kofi-btn:hover {
-    background: var(--color-hover);
-    border-color: var(--color-primary);
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
 }
 
-/* --- Pied de Page (Footer) --- */
+/* Why Paid Section */
+.paid-section {
+    background: #f9f9f9;
+    padding: 80px 20px;
+}
+
+.paid-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.paid-section h2 {
+    font-size: 40pt;
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.paid-section .subtitle {
+    text-align: center;
+    font-size: 18pt;
+    color: var(--color-accent);
+    margin-bottom: 60px;
+    font-weight: 300;
+}
+
+.reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.reason-card {
+    background: white;
+    padding: 35px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-light);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.reason-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.reason-card h3 {
+    font-size: 22pt;
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.reason-card p {
+    font-size: 14pt;
+    color: var(--color-text-dark);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Features Section */
+.features-section {
+    padding: 80px 20px;
+    background: white;
+}
+
+.features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.features-section h2 {
+    font-size: 40pt;
+    color: var(--color-primary);
+    text-align: center;
+    margin-bottom: 60px;
+    font-weight: 700;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.feature-item {
+    background: #f9f9f9;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--color-primary);
+}
+
+.feature-item h4 {
+    font-size: 16pt;
+    color: var(--color-primary);
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.feature-item p {
+    font-size: 13pt;
+    color: var(--color-text-dark);
+    margin: 0;
+}
+
+/* Pricing Section */
+.pricing-section {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.pricing-section h2 {
+    font-size: 40pt;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.pricing-section .price {
+    font-size: 60pt;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+.pricing-section .price-details {
+    font-size: 16pt;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
 .footer {
     text-align: center;
-    padding: 20px;
+    padding: 30px 20px;
     color: var(--color-accent);
     font-size: 11pt;
     border-top: 1px solid var(--color-border);
-}
-
-/* ---- Styles de Formulaire (pour support.html) --- */
-.form-container {
-    max-width: 650px;
-    margin: 60px auto;
-    padding: 40px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    background: var(--color-secondary);
-    box-shadow: var(--box-shadow-light);
-    text-align: left;
-}
-.form-container h2 {
-    color: var(--color-primary);
-    font-size: 30pt;
-    font-weight: 500;
-    margin-top: 0;
-}
-.form-container p {
-    color: var(--color-accent);
-    font-size: 14pt;
-    margin-bottom: 30px;
-}
-.form-group {
-    margin-bottom: 20px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--color-primary);
-    font-size: 12pt;
-}
-.form-control {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    box-sizing: border-box;
-    font-size: 14pt;
-    transition: border-color 0.2s;
-}
-.form-control:focus {
-    border-color: var(--color-primary);
-    outline: none;
-}
-textarea.form-control {
-    height: 180px;
-    resize: vertical;
-}
-.submit-btn {
-    background: var(--color-primary);
-    color: var(--color-secondary);
-    padding: 15px 30px;
-    border: none;
-    border-radius: var(--border-radius);
-    font-size: 16pt;
-    cursor: pointer;
-    transition: background 0.2s;
-    width: 100%;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.submit-btn:hover {
-    background: var(--color-hover);
-}
-
-/* Message d'urgence */
-.alert-message {
-    text-align: center;
-    margin-top: 30px;
-    padding: 20px;
-    background: #fcf8e3; /* Jaune très pâle, subtil */
-    color: #8a6d3b; /* Texte marron/doré */
-    border: 1px solid #faebcc;
-    border-radius: var(--border-radius);
-    font-size: 12pt;
-}
-/* Style pour le bouton retour dans la navbar de support.html et rendercore.html */
-.navbar .back-link {
-    display: inline-block;
-    padding: 15px 30px;
-    color: var(--color-text-light);
-    font-size: 14pt;
-    font-weight: 500;
-    text-decoration: none;
-}
-.navbar .back-link:hover {
-    background: var(--color-hover);
+    background: #f9f9f9;
 }
     </style>
 </head>
@@ -294,43 +366,153 @@ textarea.form-control {
         <button class="dropdown-btn">Softwares</button>
         <div class="dropdown-content">
             <a href="rendercore.html">RenderCore</a>
-            </div>
+        </div>
     </div>
     
     <div class="dropdown">
         <button class="dropdown-btn">Support</button>
         <div class="dropdown-content">
             <a href="support.html">Contact us</a>
-            </div>
+        </div>
     </div>
 </div>
 
-<div class="section">
-    <h2>RenderCore</h2>
-    <h3>Modular 3D game engine</h3>
-    <h3>Version 0.7.7</h3>
+<div class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <h2>RenderCore</h2>
+        <div class="version">Version 0.7.7</div>
+        <div class="tagline">
+            Professional-grade 3D game engine with advanced AI, streaming, and AAA-level features
+        </div>
+        <div class="cta-buttons">
+            <a href="rendercore.html" class="download-btn">View Details & Purchase</a>
+            <a href="https://ko-fi.com/renderon" class="kofi-btn">Support Development</a>
+        </div>
+    </div>
+</div>
 
-    <img src="RenderCore.png" alt="RenderCore Screenshot">
+<div class="paid-section">
+    <div class="paid-container">
+        <h2>Why RenderCore is Now a Premium Product</h2>
+        <div class="subtitle">Version 0.8.1</div>
+        
+        <div class="reasons-grid">
+            <div class="reason-card">
+                <h3>🚀 Professional Development</h3>
+                <p>RenderCore has evolved from a hobby project into a professional-grade game engine. The transition to paid ensures continuous development, regular updates, and long-term support for serious game developers.</p>
+            </div>
+            
+            <div class="reason-card">
+                <h3>⚡ Advanced Features</h3>
+                <p>We've implemented AAA-level systems: advanced NPC AI with personality traits, multi-type vehicle AI, dynamic mission systems, world streaming, pathfinding, and sophisticated behavioral states—features comparable to industry-leading engines.</p>
+            </div>
+            
+            <div class="reason-card">
+                <h3>💼 Sustainable Innovation</h3>
+                <p>Revenue from RenderCore allows us to dedicate full-time resources to engine development, ensuring rapid bug fixes, feature additions, and comprehensive documentation. Your investment directly funds innovation.</p>
+            </div>
+            
+            <div class="reason-card">
+                <h3>🎯 Quality Over Quantity</h3>
+                <p>By moving to a paid model, we can focus on building the best possible tool for serious developers rather than maintaining a free product with limited resources. Every feature is production-ready and thoroughly tested.</p>
+            </div>
+            
+            <div class="reason-card">
+                <h3>📚 Premium Support</h3>
+                <p>Paying customers receive priority support, direct access to the development team, detailed tutorials, and exclusive resources. We're committed to your success with RenderCore.</p>
+            </div>
+            
+            <div class="reason-card">
+                <h3>🌟 Fair Value</h3>
+                <p>Compared to other commercial engines with monthly subscriptions or revenue sharing, RenderCore offers a one-time purchase with lifetime access. No royalties, no hidden fees—just a powerful tool you own forever.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <p>
-        The powerful and versatile 3D Game Engine designed for modern development. <br>Start creating your next masterpiece today.
-    </p>
+<div class="features-section">
+    <div class="features-container">
+        <h2>Enterprise-Grade Features</h2>
+        
+        <div class="features-grid">
+            <div class="feature-item">
+                <h4>🤖 Advanced NPC AI System</h4>
+                <p>Multi-personality NPCs with fear, aggression, intelligence traits. Dynamic state machines for realistic behaviors.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🚗 Vehicle AI</h4>
+                <p>Intelligent vehicle navigation with traffic awareness, pathfinding, and realistic driving behaviors.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🎯 Mission System</h4>
+                <p>Complete quest and mission framework with objectives, triggers, and dynamic event handling.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🗺️ World Streaming</h4>
+                <p>Load massive open worlds seamlessly with intelligent LOD management and asset streaming.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🧭 Advanced Pathfinding</h4>
+                <p>A* pathfinding with dynamic obstacle avoidance for NPCs and vehicles.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>💥 Physics Engine</h4>
+                <p>Full rigid body dynamics, collision detection, and realistic interactions.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🎨 Skeletal Animation</h4>
+                <p>Advanced animation system with blending, state machines, and IK support.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🎮 Lua Scripting</h4>
+                <p>Complete Lua API with 60+ functions for rapid prototyping and gameplay logic.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>📦 Asset Pipeline</h4>
+                <p>Support for FBX, GLTF, OBJ with automatic optimization and batching.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🔊 Audio Engine</h4>
+                <p>3D spatial audio with streaming, effects, and dynamic mixing.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>🌐 Scene Management</h4>
+                <p>Entity Component System (ECS) architecture for optimal performance.</p>
+            </div>
+            
+            <div class="feature-item">
+                <h4>⚙️ Editor Tools</h4>
+                <p>Visual editor with real-time preview, hot-reload, and debugging tools.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <a href="rendercore.html" class="download-btn">View Details & Download</a>
-
-    <br>
-
-    <a href="https://ko-fi.com/renderon" class="kofi-btn">Support us on Ko-Fi</a>
+<div class="pricing-section">
+    <h2>Simple, Transparent Pricing</h2>
+    <div class="price">$29.99</div>
+    <div class="price-details">
+        One-time purchase • Lifetime access • All features included<br>
+        No royalties • No subscriptions • Own it forever
+    </div>
+    <a href="rendercore.html" class="download-btn">Get RenderCore Now</a>
 </div>
 
 <div class="footer">
-    © 2025 Renderon — support : support@renderon.net
+    © 2025 Renderon — Professional Game Engine Solutions<br>
+    Support: support@renderon.net
 </div>
 
 </body>
 </html>
-
-
-
-
-
