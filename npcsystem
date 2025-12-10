@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renderon - NPC AI System Documentation</title>
+
+<style>
+:root {
+    --color-primary: #000000;
+    --color-secondary: #ffffff;
+    --color-text-light: #f0f0f0;
+    --color-text-dark: #333333;
+    --color-accent: #7a7a7a;
+    --color-hover: #5a5a5a;
+    --color-border: #cccccc;
+    --color-code-bg: #1e1e1e;
+    --color-section: #f9f9f9;
+    --border-radius: 12px;
+    --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--color-secondary);
+    color: var(--color-text-dark);
+    line-height: 1.6;
+}
+
+header {
+    background: var(--color-primary);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header img.logo {
+    position: absolute;
+    left: 40px;
+    height: 35px;
+    filter: invert(100%);
+}
+
+header h1 {
+    color: var(--color-text-light);
+    font-size: 24pt;
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.navbar {
+    background: var(--color-accent);
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar .back-link {
+    display: inline-block;
+    padding: 15px 30px;
+    color: var(--color-text-light);
+    font-size: 14pt;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.navbar .back-link:hover {
+    background: var(--color-hover);
+    color: var(--color-secondary);
+}
+
+.section {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.section h2 {
+    font-size: 40pt;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.section h3 {
+    font-size: 18pt;
+    color: var(--color-accent);
+    margin-top: 0;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.section p {
+    font-size: 16pt;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    margin: 40px 0;
+}
+
+.feature-box {
+    background: var(--color-section);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    text-align: left;
+    box-shadow: var(--box-shadow-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box h4 {
+    color: var(--color-primary);
+    font-size: 20pt;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 10px;
+}
+
+.feature-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-box ul li {
+    padding: 8px 0;
+    font-size: 13pt;
+    color: var(--color-text-dark);
+}
+
+.feature-box ul li:before {
+    content: "• ";
+    color: var(--color-primary);
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.api-section {
+    background: var(--color-section);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin: 40px 0;
+    text-align: left;
+}
+
+.api-section h3 {
+    color: var(--color-primary);
+    font-size: 24pt;
+    font-weight: 600;
+    margin-top: 0;
+    text-align: left;
+}
+
+.api-function {
+    background: white;
+    border-left: 4px solid var(--color-primary);
+    padding: 15px 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+.api-function code {
+    color: #d63384;
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13pt;
+}
+
+.api-function .description {
+    margin-top: 8px;
+    color: #666;
+    font-size: 13pt;
+}
+
+.code-example {
+    background: var(--color-code-bg);
+    color: var(--color-text-light);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin: 30px 0;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 13pt;
+    overflow-x: auto;
+    box-shadow: var(--box-shadow-light);
+}
+
+.code-example pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.code-example .comment {
+    color: #6a9955;
+}
+
+.code-example .keyword {
+    color: #569cd6;
+}
+
+.code-example .function {
+    color: #dcdcaa;
+}
+
+.code-example .string {
+    color: #ce9178;
+}
+
+.code-example .number {
+    color: #b5cea8;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--color-accent);
+    font-size: 11pt;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-section);
+    margin-top: 60px;
+}
+
+.npc-type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: 600;
+    margin: 5px 5px 5px 0;
+}
+
+.badge-civilian { background: #e3f2fd; color: #1976d2; }
+.badge-police { background: #fff3e0; color: #ef6c00; }
+.badge-criminal { background: #ffebee; color: #c62828; }
+.badge-guard { background: #f3e5f5; color: #7b1fa2; }
+.badge-vendor { background: #e8f5e9; color: #388e3c; }
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="rendeonlogo.png" class="logo" alt="Renderon Logo">
+    <h1>NPC AI System - Complete API Reference</h1>
+</header>
+
+<div class="navbar">
+    <a href="main.html" class="back-link">← Back to Home</a>
+</div>
+
+<div class="section">
+    <h2>Advanced NPC AI System</h2>
+    <h3>Create intelligent, reactive NPCs with personality-driven behaviors</h3>
+
+    <p>
+        The NPC AI System provides a complete framework for creating dynamic non-player characters with
+        sophisticated behaviors. NPCs can patrol, chase, flee, investigate, and react to their environment
+        based on personality traits, health, and situational awareness.
+    </p>
+
+    <div class="feature-grid">
+        <div class="feature-box">
+            <h4>🎭 NPC Types & Personalities</h4>
+            <ul>
+                <li>6 predefined NPC types (Civilian, Police, Criminal, etc.)</li>
+                <li>4 personality traits (Aggressivity, Fear, Intelligence, Curiosity)</li>
+                <li>Customizable behavior patterns</li>
+                <li>Dynamic state transitions</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h4>🧠 Behavioral States</h4>
+            <ul>
+                <li>8 distinct AI states (Idle, Walking, Running, Attacking, etc.)</li>
+                <li>Automatic state transitions based on conditions</li>
+                <li>Health-based behavior changes</li>
+                <li>Threat detection and response</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h4>🚶 Movement & Pathfinding</h4>
+            <ul>
+                <li>Destination-based navigation</li>
+                <li>Multi-point patrol routes</li>
+                <li>Dynamic speed adjustment (walk/run)</li>
+                <li>Target tracking and pursuit</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h4>⚔️ Combat & Damage System</h4>
+            <ul>
+                <li>Health management with flee thresholds</li>
+                <li>Attack range detection</li>
+                <li>Damage application and death states</li>
+                <li>Alert level tracking</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h4>👁️ Perception System</h4>
+            <ul>
+                <li>Configurable detection ranges</li>
+                <li>FindNearestEntity by tag</li>
+                <li>Distance-based awareness</li>
+                <li>Threat memory system</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h4>🎬 Animation Integration</h4>
+            <ul>
+                <li>State-based animation playback</li>
+                <li>Configurable animation clips per state</li>
+                <li>Smooth animation transitions</li>
+                <li>Speed-matched animations</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- NPC TYPES -->
+    <div class="api-section">
+        <h3>🎭 NPC Types</h3>
+        <p style="margin-bottom: 20px;">Each NPC type comes with predefined behaviors and characteristics:</p>
+        
+        <div style="margin: 20px 0;">
+            <span class="npc-type-badge badge-civilian">CIVILIAN_MALE / CIVILIAN_FEMALE</span>
+            <div class="description" style="margin: 10px 0 20px 0;">Peaceful citizens who flee from danger and avoid conflict</div>
+            
+            <span class="npc-type-badge badge-police">POLICE</span>
+            <div class="description" style="margin: 10px 0 20px 0;">Law enforcement that investigates suspicious activity and pursues criminals</div>
+            
+            <span class="npc-type-badge badge-criminal">CRIMINAL</span>
+            <div class="description" style="margin: 10px 0 20px 0;">Aggressive NPCs who attack when threatened or provoked</div>
+            
+            <span class="npc-type-badge badge-guard">GUARD</span>
+            <div class="description" style="margin: 10px 0 20px 0;">Patrol-focused defenders of specific areas</div>
+            
+            <span class="npc-type-badge badge-vendor">VENDOR</span>
+            <div class="description" style="margin: 10px 0 20px 0;">Static or slow-moving NPCs focused on interaction rather than combat</div>
+        </div>
+    </div>
+
+    <!-- API REFERENCE -->
+    <div class="api-section">
+        <h3>📚 Complete NPC API Reference</h3>
+
+        <h4 style="margin-top: 30px; color: #333;">⚙️ NPC Configuration</h4>
+        
+        <div class="api-function">
+            <code>SetNPCType(type)</code>
+            <div class="description">Sets the NPC type. Options: "CIVILIAN_MALE", "CIVILIAN_FEMALE", "POLICE", "CRIMINAL", "GUARD", "VENDOR"</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCPersonality(aggressivity, fear, intelligence, curiosity)</code>
+            <div class="description">Defines personality traits (0.0 to 1.0 each). Affects decision-making and reactions</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCAnimations(idle, walk, run, attack, death)</code>
+            <div class="description">Assigns animation clips for each behavioral state</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCSpeed(walkSpeed, runSpeed)</code>
+            <div class="description">Configures movement speeds for walking and running states</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCStats(health, detectionRange, attackRange)</code>
+            <div class="description">Sets core stats: max health, how far they can detect entities, and attack range</div>
+        </div>
+
+        <h4 style="margin-top: 30px; color: #333;">🎮 NPC State Control</h4>
+
+        <div class="api-function">
+            <code>SetNPCState(state)</code>
+            <div class="description">Manually sets NPC state. Options: "IDLE", "WALKING", "RUNNING", "ATTACKING", "FLEEING", "INVESTIGATING", "PATROLLING", "DEAD"</div>
+        </div>
+
+        <div class="api-function">
+            <code>GetNPCState()</code>
+            <div class="description">Returns the current NPC state as a string</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCDestination(x, y, z)</code>
+            <div class="description">Sets a target position and automatically transitions to WALKING state</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCTarget(entityID)</code>
+            <div class="description">Assigns a target entity for the NPC to track or pursue</div>
+        </div>
+
+        <h4 style="margin-top: 30px; color: #333;">⚔️ Combat & Health</h4>
+
+        <div class="api-function">
+            <code>NPCDamage(amount)</code>
+            <div class="description">Applies damage to the NPC. Returns true if NPC died. Auto-triggers FLEEING if health drops below threshold</div>
+        </div>
+
+        <div class="api-function">
+            <code>GetNPCHealth()</code>
+            <div class="description">Returns current health value</div>
+        </div>
+
+        <div class="api-function">
+            <code>GetNPCAlertLevel()</code>
+            <div class="description">Returns alert level (0.0 = calm, 1.0 = maximum alert)</div>
+        </div>
+
+        <div class="api-function">
+            <code>SetNPCAlertLevel(level)</code>
+            <div class="description">Manually sets the alert level (0.0 to 1.0)</div>
+        </div>
+
+        <h4 style="margin-top: 30px; color: #333;">🚶 Patrol System</h4>
+
+        <div class="api-function">
+            <code>AddPatrolPoint(x, y, z)</code>
+            <div class="description">Adds a waypoint to the NPC's patrol route</div>
+        </div>
+
+        <div class="api-function">
+            <code>StartPatrol()</code>
+            <div class="description">Begins patrolling through added patrol points in sequence</div>
+        </div>
+
+        <div class="api-function">
+            <code>StopPatrol()</code>
+            <div class="description">Stops patrol behavior and transitions to IDLE state</div>
+        </div>
+
+        <h4 style="margin-top: 30px; color: #333;">👁️ Perception & Awareness</h4>
+
+        <div class="api-function">
+            <code>FindNearestEntity(tag, maxRange)</code>
+            <div class="description">Finds the closest entity with the given tag within maxRange. Returns entityID and distance, or nil if none found</div>
+        </div>
+    </div>
+
+    <!-- CODE EXAMPLES -->
+    <h3 style="text-align: left; margin-top: 60px; font-size: 28pt;">💡 Complete Code Examples</h3>
+
+    <div class="code-example">
+<pre><span class="comment">-- Example 1: Civilian NPC with Fear-Based Behavior</span>
+<span class="keyword">function</span> <span class="function">OnStart</span>()
+    <span class="comment">-- Configure as fearful civilian</span>
+    SetNPCType(<span class="string">"CIVILIAN_MALE"</span>)
+    SetNPCPersonality(<span class="number">0.1</span>, <span class="number">0.9</span>, <span class="number">0.5</span>, <span class="number">0.3</span>) <span class="comment">-- Low aggression, high fear</span>
+    SetNPCStats(<span class="number">50</span>, <span class="number">15.0</span>, <span class="number">1.0</span>) <span class="comment">-- health, detection, attack range</span>
+    SetNPCSpeed(<span class="number">2.0</span>, <span class="number">6.0</span>) <span class="comment">-- walk, run</span>
+    SetNPCAnimations(<span class="string">"idle"</span>, <span class="string">"walk"</span>, <span class="string">"run"</span>, <span class="string">"attack"</span>, <span class="string">"death"</span>)
+    
+    <span class="comment">-- Setup patrol route</span>
+    AddPatrolPoint(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)
+    AddPatrolPoint(<span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>)
+    AddPatrolPoint(<span class="number">10</span>, <span class="number">0</span>, <span class="number">10</span>)
+    AddPatrolPoint(<span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>)
+    StartPatrol()
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
+    <span class="keyword">local</span> state = GetNPCState()
+    
+    <span class="comment">-- Check for nearby threats</span>
+    <span class="keyword">local</span> enemyID, distance = FindNearestEntity(<span class="string">"Enemy"</span>, <span class="number">15.0</span>)
+    
+    <span class="keyword">if</span> enemyID ~= <span class="keyword">nil</span> <span class="keyword">then</span>
+        <span class="comment">-- Enemy detected - flee!</span>
+        <span class="keyword">if</span> distance < <span class="number">10.0</span> <span class="keyword">then</span>
+            SetNPCState(<span class="string">"FLEEING"</span>)
+            SetNPCAlertLevel(<span class="number">1.0</span>)
+            PlayAnim(<span class="string">"run"</span>)
+            
+            <span class="comment">-- Run away from enemy</span>
+            <span class="keyword">local</span> ex, ey, ez = GetEntityPosition(enemyID)
+            <span class="keyword">local</span> mx, my, mz = GetPosition()
+            <span class="keyword">local</span> dirX = mx - ex
+            <span class="keyword">local</span> dirZ = mz - ez
+            <span class="keyword">local</span> len = Sqrt(dirX * dirX + dirZ * dirZ)
+            
+            <span class="keyword">if</span> len > <span class="number">0.1</span> <span class="keyword">then</span>
+                dirX = dirX / len
+                dirZ = dirZ / len
+                Translate(dirX * <span class="number">6.0</span> * dt, <span class="number">0</span>, dirZ * <span class="number">6.0</span> * dt)
+            <span class="keyword">end</span>
+        <span class="keyword">else</span>
+            <span class="comment">-- Enemy far away - investigate cautiously</span>
+            SetNPCState(<span class="string">"INVESTIGATING"</span>)
+            SetNPCAlertLevel(<span class="number">0.5</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        <span class="comment">-- No threats - continue patrol</span>
+        <span class="keyword">if</span> state == <span class="string">"FLEEING"</span> <span class="keyword">or</span> state == <span class="string">"INVESTIGATING"</span> <span class="keyword">then</span>
+            StartPatrol()
+            SetNPCAlertLevel(<span class="number">0.0</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></pre>
+    </div>
+
+    <div class="code-example">
+<pre><span class="comment">-- Example 2: Aggressive Police Officer</span>
+<span class="keyword">local</span> chaseStartTime = <span class="number">0</span>
+<span class="keyword">local</span> isChasing = <span class="keyword">false</span>
+
+<span class="keyword">function</span> <span class="function">OnStart</span>()
+    SetNPCType(<span class="string">"POLICE"</span>)
+    SetNPCPersonality(<span class="number">0.7</span>, <span class="number">0.2</span>, <span class="number">0.8</span>, <span class="number">0.7</span>) <span class="comment">-- Aggressive, brave, smart, curious</span>
+    SetNPCStats(<span class="number">100</span>, <span class="number">20.0</span>, <span class="number">2.5</span>)
+    SetNPCSpeed(<span class="number">3.0</span>, <span class="number">8.0</span>)
+    SetNPCAnimations(<span class="string">"idle_cop"</span>, <span class="string">"walk_cop"</span>, <span class="string">"run_cop"</span>, <span class="string">"attack_cop"</span>, <span class="string">"death_cop"</span>)
+    
+    StartTimer(<span class="string">"police_ai"</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
+    <span class="keyword">local</span> criminalID, distance = FindNearestEntity(<span class="string">"Criminal"</span>, <span class="number">20.0</span>)
+    
+    <span class="keyword">if</span> criminalID ~= <span class="keyword">nil</span> <span class="keyword">then</span>
+        <span class="comment">-- Criminal spotted!</span>
+        <span class="keyword">if</span> <span class="keyword">not</span> isChasing <span class="keyword">then</span>
+            isChasing = <span class="keyword">true</span>
+            chaseStartTime = GetTimer(<span class="string">"police_ai"</span>)
+            PlayAudio(<span class="string">"assets/sounds/siren.wav"</span>)
+        <span class="keyword">end</span>
+        
+        SetNPCTarget(criminalID)
+        SetNPCAlertLevel(<span class="number">1.0</span>)
+        
+        <span class="keyword">if</span> distance < <span class="number">2.5</span> <span class="keyword">then</span>
+            <span class="comment">-- In attack range</span>
+            SetNPCState(<span class="string">"ATTACKING"</span>)
+            PlayAnim(<span class="string">"attack_cop"</span>)
+            
+            <span class="comment">-- Apply damage every second</span>
+            <span class="keyword">local</span> timeSinceChase = GetTimer(<span class="string">"police_ai"</span>) - chaseStartTime
+            <span class="keyword">if</span> timeSinceChase % <span class="number">1.0</span> < dt <span class="keyword">then</span>
+                <span class="comment">-- Deal damage to criminal (would need cross-entity damage system)</span>
+                print(<span class="string">"Police attacking criminal!"</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">elseif</span> distance < <span class="number">10.0</span> <span class="keyword">then</span>
+            <span class="comment">-- Chase at full speed</span>
+            SetNPCState(<span class="string">"RUNNING"</span>)
+            PlayAnim(<span class="string">"run_cop"</span>)
+            
+            <span class="keyword">local</span> cx, cy, cz = GetEntityPosition(criminalID)
+            <span class="keyword">local</span> mx, my, mz = GetPosition()
+            LookAt(cx, cy, cz)
+            Translate(<span class="number">0</span>, <span class="number">0</span>, -<span class="number">8.0</span> * dt)
+        <span class="keyword">else</span>
+            <span class="comment">-- Investigate from distance</span>
+            SetNPCState(<span class="string">"INVESTIGATING"</span>)
+            PlayAnim(<span class="string">"walk_cop"</span>)
+            
+            <span class="keyword">local</span> cx, cy, cz = GetEntityPosition(criminalID)
+            SetNPCDestination(cx, cy, cz)
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        <span class="comment">-- No criminals - return to idle</span>
+        <span class="keyword">if</span> isChasing <span class="keyword">then</span>
+            isChasing = <span class="keyword">false</span>
+            SetNPCState(<span class="string">"IDLE"</span>)
+            SetNPCAlertLevel(<span class="number">0.0</span>)
+            PlayAnim(<span class="string">"idle_cop"</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></pre>
+    </div>
+
+    <div class="code-example">
+<pre><span class="comment">-- Example 3: Guard with Dynamic Patrol</span>
+<span class="keyword">local</span> baseX, baseY, baseZ = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>
+<span class="keyword">local</span> maxPatrolDistance = <span class="number">30.0</span>
+<span class="keyword">local</span> hasReturned = <span class="keyword">true</span>
+
+<span class="keyword">function</span> <span class="function">OnStart</span>()
+    SetNPCType(<span class="string">"GUARD"</span>)
+    SetNPCPersonality(<span class="number">0.6</span>, <span class="number">0.3</span>, <span class="number">0.7</span>, <span class="number">0.5</span>)
+    SetNPCStats(<span class="number">120</span>, <span class="number">18.0</span>, <span class="number">3.0</span>)
+    SetNPCSpeed(<span class="number">2.5</span>, <span class="number">7.0</span>)
+    SetNPCAnimations(<span class="string">"idle_guard"</span>, <span class="string">"walk_guard"</span>, <span class="string">"run_guard"</span>, <span class="string">"attack_guard"</span>, <span class="string">"death_guard"</span>)
+    
+    <span class="comment">-- Remember starting position</span>
+    baseX, baseY, baseZ = GetPosition()
+    
+    <span class="comment">-- Setup square patrol</span>
+    AddPatrolPoint(baseX, baseY, baseZ)
+    AddPatrolPoint(baseX + <span class="number">15</span>, baseY, baseZ)
+    AddPatrolPoint(baseX + <span class="number">15</span>, baseY, baseZ + <span class="number">15</span>)
+    AddPatrolPoint(baseX, baseY, baseZ + <span class="number">15</span>)
+    StartPatrol()
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
+    <span class="keyword">local</span> health = GetNPCHealth()
+    <span class="keyword">local</span> state = GetNPCState()
+    
+    <span class="comment">-- Check for intruders</span>
+    <span class="keyword">local</span> intruderID, distance = FindNearestEntity(<span class="string">"Player"</span>, <span class="number">18.0</span>)
+    
+    <span class="keyword">if</span> intruderID ~= <span class="keyword">nil</span> <span class="keyword">then</span>
+        <span class="comment">-- Intruder detected</span>
+        <span class="keyword">local
