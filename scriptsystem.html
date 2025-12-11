@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renderon - Complete Scripting & AI Reference</title>
-
+    <title>Renderon - Complete API & GTA Behaviors Documentation</title>
 <style>
 :root {
     --color-primary: #000000;
     --color-secondary: #ffffff;
     --color-text-light: #f0f0f0;
-    --color-text-dark: #333333;
+    --color-text-dark: #1a1a1a;
     --color-accent: #7a7a7a;
     --color-hover: #5a5a5a;
-    --color-border: #cccccc;
+    --color-border: #e0e0e0;
     --color-code-bg: #1e1e1e;
     --color-section: #f9f9f9;
-    --border-radius: 12px;
-    --box-shadow-light: 0 4px 10px rgba(0, 0, 0, 0.05);
-    
-    /* GTA Specific Colors */
-    --color-gta-bg: #f4f1ea;
+    --color-gta-bg: #fff8f8;
     --color-crime: #c62828;
     --color-police: #1565c0;
+    --color-success: #2e7d32;
+    --color-warning: #f57c00;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
@@ -34,532 +35,1713 @@ html {
 }
 
 body {
-    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--color-secondary);
     color: var(--color-text-dark);
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
+/* Header */
 header {
-    background: var(--color-primary);
-    padding: 20px 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 25px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+header .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
 }
 
 header img.logo {
-    position: absolute;
-    left: 40px;
-    height: 35px;
-    filter: invert(100%);
+    height: 40px;
+    filter: invert(100%) brightness(1.1);
 }
 
 header h1 {
     color: var(--color-text-light);
-    font-size: 24pt;
+    font-size: 28pt;
     font-weight: 300;
-    letter-spacing: 1px;
-    margin: 0;
+    letter-spacing: 2px;
 }
 
+header .version {
+    background: var(--color-crime);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/* Navigation */
 .navbar {
     background: var(--color-accent);
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1px;
     position: sticky;
     top: 0;
-    z-index: 100;
-    height: 60px; /* Hauteur fixe pour centrer le bouton download */
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.navbar .nav-links {
+    display: flex;
+    gap: 2px;
 }
 
 .navbar a.nav-link {
     display: inline-block;
-    padding: 15px 30px;
+    padding: 16px 28px;
     color: var(--color-text-light);
     font-size: 12pt;
     font-weight: 500;
     text-decoration: none;
-    transition: background 0.2s, color 0.2s;
+    transition: all 0.3s ease;
     background: #444;
-    height: 100%;
-    display: flex;
-    align-items: center;
 }
 
 .navbar a.nav-link:hover {
     background: var(--color-hover);
-    color: var(--color-secondary);
+    transform: translateY(-2px);
 }
 
-/* Style spécifique pour le bouton Download à droite */
-.download-btn {
-    position: absolute;
-    right: 20px;
-    background-color: var(--color-crime) !important;
+.navbar .download-btn {
+    background: var(--color-crime) !important;
     color: white !important;
-    font-weight: bold !important;
-    border-radius: 4px;
-    padding: 8px 15px !important;
-    height: auto !important;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-left: 20px;
     text-transform: uppercase;
-    font-size: 10pt !important;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 10pt;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 8px rgba(198, 40, 40, 0.3);
 }
 
-.download-btn:hover {
-    background-color: #a52020 !important;
-    transform: translateY(-1px);
+.navbar .download-btn:hover {
+    background: #a52020 !important;
+    box-shadow: 0 5px 15px rgba(198, 40, 40, 0.4);
+}
+
+/* Main Content */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
 }
 
 .section {
-    max-width: 1200px;
-    margin: auto;
-    text-align: center;
-    padding: 60px 20px;
+    margin-bottom: 80px;
 }
 
-.section h2 {
-    font-size: 40pt;
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 42pt;
     color: var(--color-primary);
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-weight: 700;
 }
 
-.section h3 {
+.section-header .subtitle {
     font-size: 18pt;
     color: var(--color-accent);
-    margin-top: 0;
     font-weight: 300;
+}
+
+.section-intro {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border-left: 5px solid var(--color-primary);
     margin-bottom: 40px;
+    font-size: 15pt;
+    line-height: 1.8;
 }
 
-.section p {
-    font-size: 16pt;
-    margin-top: 30px;
-    text-align: left;
-}
-
+/* Feature Grid */
 .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
+    gap: 25px;
     margin: 40px 0;
 }
 
 .feature-box {
-    background: var(--color-section);
-    border: 1px solid var(--color-border);
+    background: white;
+    border: 2px solid var(--color-border);
     border-radius: var(--border-radius);
-    padding: 30px;
-    text-align: left;
-    box-shadow: var(--box-shadow-light);
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.feature-box.gta-featured {
-    border-left: 5px solid var(--color-crime);
-    background: var(--color-gta-bg);
+    padding: 35px;
+    transition: all 0.3s ease;
+    box-shadow: var(--box-shadow);
 }
 
 .feature-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: var(--color-primary);
+}
+
+.feature-box.gta-featured {
+    border-left: 6px solid var(--color-crime);
+    background: var(--color-gta-bg);
 }
 
 .feature-box h4 {
     color: var(--color-primary);
-    font-size: 20pt;
+    font-size: 22pt;
     font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--color-primary);
-    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.feature-box .icon {
+    font-size: 28pt;
 }
 
 .feature-box ul {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
 
 .feature-box ul li {
-    padding: 8px 0;
-    font-size: 13pt;
+    padding: 10px 0;
+    font-size: 13.5pt;
     color: var(--color-text-dark);
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.feature-box ul li:last-child {
+    border-bottom: none;
 }
 
 .feature-box ul li:before {
-    content: "• ";
-    color: var(--color-primary);
+    content: "▸ ";
+    color: var(--color-crime);
     font-weight: bold;
-    margin-right: 8px;
+    margin-right: 10px;
+    font-size: 14pt;
 }
 
+/* API Section */
 .api-section {
-    background: var(--color-section);
+    background: white;
     border-radius: var(--border-radius);
-    padding: 30px;
+    padding: 40px;
     margin: 40px 0;
-    text-align: left;
+    box-shadow: var(--box-shadow);
+    border: 2px solid var(--color-border);
 }
 
 .api-section.gta-api {
-    background: #fff8f8;
-    border: 1px solid #e0c0c0;
+    background: var(--color-gta-bg);
+    border-color: #ffcdd2;
 }
 
 .api-section h3 {
     color: var(--color-primary);
-    font-size: 24pt;
+    font-size: 26pt;
     font-weight: 600;
-    margin-top: 0;
-    text-align: left;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--color-primary);
 }
 
+.api-section h4 {
+    color: var(--color-accent);
+    font-size: 20pt;
+    font-weight: 600;
+    margin: 35px 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.api-category {
+    margin-bottom: 50px;
+}
+
+/* API Function Cards */
 .api-function {
-    background: white;
-    border-left: 4px solid var(--color-primary);
-    padding: 15px 20px;
-    margin: 15px 0;
+    background: #fafafa;
+    border-left: 5px solid var(--color-primary);
+    padding: 20px 25px;
+    margin: 18px 0;
     border-radius: 8px;
     position: relative;
+    transition: all 0.2s ease;
+}
+
+.api-function:hover {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateX(5px);
 }
 
 .api-function.new-api {
     border-left-color: var(--color-crime);
+    background: #fff5f5;
 }
 
 .api-function.new-api:after {
-    content: "NEW (GTA)";
+    content: "NEW GTA";
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 18px;
+    right: 20px;
     background: var(--color-crime);
     color: white;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 4px;
+    font-size: 9pt;
+    padding: 4px 10px;
+    border-radius: 5px;
     font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
 .api-function code {
     color: #d63384;
     background: #f8f9fa;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 13pt;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13.5pt;
+    font-weight: 600;
 }
 
 .api-function .description {
-    margin-top: 8px;
-    color: #666;
-    font-size: 13pt;
+    margin-top: 12px;
+    color: #555;
+    font-size: 13.5pt;
+    line-height: 1.6;
 }
 
+.api-function .params {
+    margin-top: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 5px;
+    font-size: 12pt;
+    color: #666;
+    border-left: 3px solid var(--color-success);
+}
+
+.api-function .returns {
+    margin-top: 8px;
+    padding: 10px;
+    background: #e8f5e9;
+    border-radius: 5px;
+    font-size: 12pt;
+    color: var(--color-success);
+    font-weight: 500;
+}
+
+/* Code Examples */
 .code-example {
     background: var(--color-code-bg);
     color: var(--color-text-light);
     border-radius: var(--border-radius);
-    padding: 25px;
-    margin: 30px 0;
-    text-align: left;
-    font-family: 'Courier New', monospace;
-    font-size: 13pt;
+    padding: 30px;
+    margin: 35px 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13.5pt;
     overflow-x: auto;
-    box-shadow: var(--box-shadow-light);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid #333;
+    position: relative;
+}
+
+.code-example:before {
+    content: "LUA";
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #4a4a4a;
+    color: #aaa;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10pt;
+    font-weight: bold;
 }
 
 .code-example pre {
     margin: 0;
     white-space: pre-wrap;
     word-wrap: break-word;
+    line-height: 1.6;
 }
 
-.code-example .comment { color: #6a9955; }
-.code-example .keyword { color: #569cd6; }
+.code-example .comment { color: #6a9955; font-style: italic; }
+.code-example .keyword { color: #569cd6; font-weight: bold; }
 .code-example .function { color: #dcdcaa; }
 .code-example .string { color: #ce9178; }
 .code-example .number { color: #b5cea8; }
 
-.footer {
-    text-align: center;
-    padding: 30px 20px;
-    color: var(--color-accent);
-    font-size: 11pt;
-    border-top: 1px solid var(--color-border);
-    background: var(--color-section);
-    margin-top: 60px;
+.example-title {
+    background: #2d2d2d;
+    padding: 12px 20px;
+    margin: -30px -30px 20px -30px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    font-size: 14pt;
+    font-weight: 600;
+    color: #fff;
+    border-bottom: 2px solid var(--color-crime);
 }
 
-/* Badges for NPC Types */
+/* NPC Type Badges */
+.npc-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 25px 0;
+}
+
 .npc-type-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 11pt;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 11.5pt;
     font-weight: 600;
-    margin: 5px 5px 5px 0;
+    transition: all 0.2s ease;
+    cursor: default;
 }
 
-.badge-civilian { background: #e3f2fd; color: #1976d2; }
+.npc-type-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.badge-civilian { background: #e3f2fd; color: #1565c0; }
 .badge-police { background: #fff3e0; color: #ef6c00; }
 .badge-criminal { background: #ffebee; color: #c62828; }
 .badge-guard { background: #f3e5f5; color: #7b1fa2; }
 .badge-vendor { background: #e8f5e9; color: #388e3c; }
 
+/* Tables */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    background: white;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.comparison-table th {
+    background: var(--color-primary);
+    color: white;
+    padding: 18px;
+    text-align: left;
+    font-size: 13pt;
+    font-weight: 600;
+}
+
+.comparison-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12.5pt;
+}
+
+.comparison-table tr:hover {
+    background: #fafafa;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-accent);
+    font-size: 11pt;
+    border-top: 2px solid var(--color-border);
+    background: var(--color-section);
+    margin-top: 80px;
+}
+
+.footer a {
+    color: var(--color-crime);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    header h1 {
+        font-size: 20pt;
+    }
+    
+    .navbar .nav-links {
+        flex-wrap: wrap;
+    }
+    
+    .section-header h2 {
+        font-size: 32pt;
+    }
+}
+
+/* Scroll to top button */
+.scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--color-crime);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scroll-top.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.scroll-top:hover {
+    background: #a52020;
+    transform: translateY(-5px);
+}
+
+/* Info boxes */
+.info-box {
+    background: #e3f2fd;
+    border-left: 5px solid #1976d2;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    font-size: 13pt;
+}
+
+.warning-box {
+    background: #fff3e0;
+    border-left: 5px solid #f57c00;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    font-size: 13pt;
+}
+
+.tip-box {
+    background: #e8f5e9;
+    border-left: 5px solid #2e7d32;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    font-size: 13pt;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-    <img src="rendeonlogo.png" class="logo" alt="Logo Renderon">
-    <h1>Renderon Workspace - API Reference</h1>
+    <div class="container">
+        <img src="rendeonlogo.png" class="logo" alt="Renderon Logo">
+        <h1>Renderon Engine API</h1>
+        <span class="version">v2.1.0</span>
+    </div>
 </header>
 
 <div class="navbar">
-    <a href="#core" class="nav-link">Core System</a>
-    <a href="#physics" class="nav-link">Physics & Input</a>
-    <a href="#npc" class="nav-link">NPC AI</a>
-    <a href="#gta" class="nav-link">GTA Life Sim</a>
-    <a href="#examples" class="nav-link">Examples</a>
-    <a href="api.txt" download="api.txt" class="nav-link download-btn">Download API</a>
-</div>
-
-<div class="section" id="core">
-    <h2>Scripting & AI Engine</h2>
-    <h3>Integrated Lua Runtime with Advanced GTA Behaviors</h3>
-
-    <p>
-        The Renderon Script System combines standard game engine controls (Transform, Physics, Input) with 
-        a high-level <strong>GTA AI System</strong>. This allows for the creation of living worlds with 
-        daily schedules, crime reporting, police interaction, and complex pathfinding without touching C++.
-    </p>
-
-    <div class="feature-grid">
-        <div class="feature-box">
-            <h4>🎮 Input & Controls</h4>
-            <ul>
-                <li>Complete keyboard/mouse detection</li>
-                <li>FPS Camera locking</li>
-                <li>Input axis mapping</li>
-            </ul>
+    <div class="container">
+        <div class="nav-links">
+            <a href="#overview" class="nav-link">Overview</a>
+            <a href="#core" class="nav-link">Core API</a>
+            <a href="#physics" class="nav-link">Physics</a>
+            <a href="#npc" class="nav-link">NPC AI</a>
+            <a href="#gta" class="nav-link">GTA Systems</a>
+            <a href="#examples" class="nav-link">Examples</a>
         </div>
-
-        <div class="feature-box">
-            <h4>🔧 Core Engine</h4>
-            <ul>
-                <li>Transform manipulation (Translate/Rotate)</li>
-                <li>Entity spawning & destruction</li>
-                <li>Distance and vector math utils</li>
-            </ul>
-        </div>
-
-        <div class="feature-box gta-featured">
-            <h4>🏙️ GTA Life Sim</h4>
-            <ul>
-                <li><strong>Daily Schedules</strong> (Work, Home, Lunch)</li>
-                <li><strong>Crime Reporting</strong> system</li>
-                <li><strong>Police Awareness</strong> logic</li>
-                <li>Dynamic Friend/Enemy relationships</li>
-            </ul>
-        </div>
-
-        <div class="feature-box gta-featured">
-            <h4>🧠 Advanced AI</h4>
-            <ul>
-                <li><strong>A* Pathfinding</strong> (MoveTo)</li>
-                <li>Perception (Sight/Hearing)</li>
-                <li>Personality Traits (Fear/Aggression)</li>
-                <li>Crowd & Traffic logic</li>
-            </ul>
-        </div>
+        <a href="api.txt" download="renderon_api.txt" class="download-btn">Download API</a>
     </div>
 </div>
 
-<div class="section" id="physics">
-    <div class="api-section">
-        <h3>📚 Core API Reference</h3>
-        <p>Standard functions for entity manipulation and game logic.</p>
-
-        <h4 style="margin-top: 30px; color: #333;">🕹️ Input & Time</h4>
-        <div class="api-function"><code>IsKeyDown(key)</code> <div class="description">Checks key press ("W", "SPACE", "SHIFT", "ESC").</div></div>
-        <div class="api-function"><code>IsMouseButton(btn)</code> <div class="description">0: Left, 1: Right, 2: Middle.</div></div>
-        <div class="api-function"><code>GetDeltaTime()</code> <div class="description">Time in seconds since last frame.</div></div>
-
-        <h4 style="margin-top: 30px; color: #333;">📍 Transform & Visuals</h4>
-        <div class="api-function"><code>SetPosition(x, y, z)</code> <div class="description">Teleport entity.</div></div>
-        <div class="api-function"><code>LookAt(x, y, z)</code> <div class="description">Rotates entity to face target.</div></div>
-        <div class="api-function"><code>PlayAnim(name)</code> <div class="description">Plays animation from MeshComponent list.</div></div>
-        <div class="api-function"><code>SetColor(r, g, b)</code> <div class="description">Changes mesh tint color.</div></div>
-
-        <h4 style="margin-top: 30px; color: #333;">⚡ Physics</h4>
-        <div class="api-function"><code>SetVelocity(x, y, z)</code> <div class="description">Directly set RigidBody velocity.</div></div>
-        <div class="api-function"><code>AddForce(x, y, z)</code> <div class="description">Apply impulse force.</div></div>
-        <div class="api-function"><code>IsGrounded()</code> <div class="description">Returns true if collider touches ground.</div></div>
-    </div>
-</div>
-
-<div class="section" id="npc">
-    <h2>NPC & AI System</h2>
-    <h3>Personality, Pathfinding & Life Simulation</h3>
-
-    <div style="text-align: left; margin-bottom: 30px;">
-        <h4>Available NPC Types:</h4>
-        <span class="npc-type-badge badge-civilian">CIVILIAN_MALE</span>
-        <span class="npc-type-badge badge-civilian">CIVILIAN_FEMALE</span>
-        <span class="npc-type-badge badge-police">POLICE</span>
-        <span class="npc-type-badge badge-criminal">GANG_MEMBER</span>
-        <span class="npc-type-badge badge-guard">SECURITY_GUARD</span>
-        <span class="npc-type-badge badge-vendor">SHOP_KEEPER</span>
-        <span class="npc-type-badge badge-civilian">BUSINESS_PERSON</span>
-    </div>
-
-    <div class="api-section">
-        <h3>🎭 NPC Configuration API</h3>
-        <div class="api-function">
-            <code>SetNPCType(typeString)</code>
-            <div class="description">Sets the AI archetype (e.g., "POLICE", "GANG_MEMBER"). Affects default behaviors.</div>
-        </div>
-        <div class="api-function">
-            <code>SetNPCPersonality(aggression, fear, courage)</code>
-            <div class="description">Floats 0.0 to 1.0. Determines if NPC fights or flees during conflict.</div>
-        </div>
-        <div class="api-function">
-            <code>SetNPCState(state)</code>
-            <div class="description">Force state: "IDLE", "WALKING", "ATTACKING", "FLEEING", "DRIVING".</div>
-        </div>
-        <div class="api-function">
-            <code>FindNearestEntity(tag, range)</code>
-            <div class="description">Returns ID of nearest entity with specific tag (e.g. "Player").</div>
-        </div>
-    </div>
-
-    <div class="api-section gta-api" id="gta">
-        <h3 style="color: #c62828;">🏙️ GTA Life Sim API (New)</h3>
-        <p>Specific functions for the GTA Behavior System and Daily Schedules.</p>
-
-        <div class="api-function new-api">
-            <code>AddDailyActivity(name, startHr, endHr, x, y, z)</code>
-            <div class="description">Adds a routine entry. NPC will automatically Pathfind to (x,y,z) between startHr and endHr.</div>
-        </div>
-        
-        <div class="api-function new-api">
-            <code>MoveTo(x, y, z)</code>
-            <div class="description"><strong>Pathfinding:</strong> Calculates a navmesh path to target. Obstacle avoidance included.</div>
+<div class="container" id="overview">
+    <div class="section">
+        <div class="section-header">
+            <h2>Complete API Reference</h2>
+            <p class="subtitle">Lua Scripting Engine with Advanced GTA-Style AI</p>
         </div>
 
-        <div class="api-function new-api">
-            <code>ReportCrime(x, y, z, severity)</code>
-            <div class="description">Triggers the Police System. Severity 1-5. Nearby Police NPCs will respond.</div>
+        <div class="section-intro">
+            <p><strong>Renderon Engine</strong> provides a powerful Lua scripting environment integrated with a sophisticated AI system inspired by GTA's living world mechanics. Create immersive open-world experiences with autonomous NPCs, dynamic traffic, police systems, daily schedules, and complex pathfinding — all without touching C++.</p>
+            
+            <p style="margin-top: 15px;">This documentation covers <strong>100+ API functions</strong> across multiple systems including physics, input handling, NPC behavior, crime simulation, and advanced navigation.</p>
         </div>
 
-        <div class="api-function new-api">
-            <code>HasSeenPolice()</code>
-            <div class="description">Returns true if a Police NPC is within visual range and Line of Sight.</div>
-        </div>
+        <div class="feature-grid">
+            <div class="feature-box">
+                <h4><span class="icon">🎮</span> Input & Controls</h4>
+                <ul>
+                    <li>Complete keyboard/mouse detection</li>
+                    <li>FPS camera locking & unlocking</li>
+                    <li>Mouse delta tracking for smooth camera</li>
+                    <li>Input axis mapping</li>
+                    <li>Gamepad support ready</li>
+                </ul>
+            </div>
 
-        <div class="api-function new-api">
-            <code>MakeFriend(entityID)</code>
-            <div class="description">Adds entity to Friend list. Prevents aggression and enables "Backup" behavior.</div>
+            <div class="feature-box">
+                <h4><span class="icon">🔧</span> Core Engine</h4>
+                <ul>
+                    <li>Transform manipulation (Position/Rotation/Scale)</li>
+                    <li>Entity spawning & destruction</li>
+                    <li>Distance and vector math utilities</li>
+                    <li>Animation playback control</li>
+                    <li>Material & color manipulation</li>
+                </ul>
+            </div>
+
+            <div class="feature-box gta-featured">
+                <h4><span class="icon">🏙️</span> GTA Life Simulation</h4>
+                <ul>
+                    <li><strong>Daily Schedules</strong> - Work, home, activities</li>
+                    <li><strong>Crime Reporting</strong> - Witnesses, police response</li>
+                    <li><strong>Wanted System</strong> - 6-star police escalation</li>
+                    <li><strong>Social Relationships</strong> - Friends, enemies, gangs</li>
+                    <li><strong>Memory System</strong> - NPCs remember events</li>
+                </ul>
+            </div>
+
+            <div class="feature-box gta-featured">
+                <h4><span class="icon">🧠</span> Advanced AI</h4>
+                <ul>
+                    <li><strong>A* Pathfinding</strong> - Smart obstacle avoidance</li>
+                    <li><strong>Perception</strong> - Vision cones, hearing range</li>
+                    <li><strong>Personality Traits</strong> - Fear, aggression, courage</li>
+                    <li><strong>State Machines</strong> - Idle, patrol, chase, flee</li>
+                    <li><strong>Crowd Behavior</strong> - Group movement, panic</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4><span class="icon">🚗</span> Vehicle Systems</h4>
+                <ul>
+                    <li>Full vehicle physics with suspension</li>
+                    <li>Traffic AI with lane following</li>
+                    <li>Vehicle entry/exit animations</li>
+                    <li>Police pursuit vehicles</li>
+                    <li>Damage and fire systems</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h4><span class="icon">🔫</span> Combat & Weapons</h4>
+                <ul>
+                    <li>Raycast weapon system</li>
+                    <li>Accuracy and recoil simulation</li>
+                    <li>NPC reaction to gunfire</li>
+                    <li>Health and armor systems</li>
+                    <li>Automatic weapon switching</li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="section" id="examples">
-    <h3 style="text-align: left; font-size: 28pt;">💡 Code Examples</h3>
+<div class="container" id="core">
+    <div class="section">
+        <div class="section-header">
+            <h2>Core API Reference</h2>
+            <p class="subtitle">Essential Functions for Game Logic</p>
+        </div>
 
-    <div class="code-example">
-<pre><span class="comment">-- Example 1: Creating a Citizen with a Daily Schedule (GTA Style)</span>
+        <div class="api-section">
+            <h3>⏱️ Time & Delta</h3>
+            
+            <div class="api-function">
+                <code>GetDeltaTime()</code>
+                <div class="description">Returns the time in seconds since the last frame. Essential for frame-rate independent movement.</div>
+                <div class="returns">→ Returns: float (typically 0.016 for 60fps)</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetTime()</code>
+                <div class="description">Returns the total elapsed time since the game started in seconds.</div>
+                <div class="returns">→ Returns: float</div>
+            </div>
+
+            <div class="api-function">
+                <code>StartTimer(name)</code>
+                <div class="description">Starts a named timer for measuring custom durations.</div>
+                <div class="params">Parameters: name (string) - Timer identifier</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetTimer(name)</code>
+                <div class="description">Gets the elapsed time for a named timer.</div>
+                <div class="returns">→ Returns: float (seconds elapsed)</div>
+            </div>
+
+            <h4>🕹️ Input System</h4>
+
+            <div class="api-function">
+                <code>IsKeyDown(key)</code>
+                <div class="description">Checks if a keyboard key is currently pressed.</div>
+                <div class="params">Parameters: key (string) - "W", "A", "S", "D", "SPACE", "SHIFT", "CTRL", "ALT", "ESC", "ENTER", "TAB", "0"-"9", "UP", "DOWN", "LEFT", "RIGHT"</div>
+                <div class="returns">→ Returns: boolean</div>
+            </div>
+
+            <div class="api-function">
+                <code>IsMouseButton(button)</code>
+                <div class="description">Checks if a mouse button is pressed.</div>
+                <div class="params">Parameters: button (number) - 0 (Left), 1 (Right), 2 (Middle)</div>
+                <div class="returns">→ Returns: boolean</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetMousePos()</code>
+                <div class="description">Gets the current mouse position in screen coordinates.</div>
+                <div class="returns">→ Returns: x (float), y (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetMouseDelta()</code>
+                <div class="description">Gets the mouse movement since last frame. Perfect for FPS cameras.</div>
+                <div class="returns">→ Returns: deltaX (float), deltaY (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>LockMouse(locked)</code>
+                <div class="description">Locks/unlocks the mouse cursor (GLFW_CURSOR_DISABLED mode).</div>
+                <div class="params">Parameters: locked (boolean) - true to lock, false to show cursor</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetMousePos(x, y)</code>
+                <div class="description">Manually sets the mouse cursor position.</div>
+                <div class="params">Parameters: x (float), y (float) - Screen coordinates</div>
+            </div>
+
+            <h4>📍 Transform System</h4>
+
+            <div class="api-function">
+                <code>SetPosition(x, y, z)</code>
+                <div class="description">Instantly teleports the entity to a specific world position.</div>
+                <div class="params">Parameters: x, y, z (float) - World coordinates</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetPosition()</code>
+                <div class="description">Gets the current world position of the entity.</div>
+                <div class="returns">→ Returns: x, y, z (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>Translate(x, y, z)</code>
+                <div class="description">Moves the entity by the specified offset (relative movement).</div>
+                <div class="params">Parameters: x, y, z (float) - Movement delta</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetRotation(x, y, z)</code>
+                <div class="description">Sets the entity's rotation in Euler angles (degrees).</div>
+                <div class="params">Parameters: x (pitch), y (yaw), z (roll) in degrees</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetRotation()</code>
+                <div class="description">Gets the current rotation in Euler angles.</div>
+                <div class="returns">→ Returns: x, y, z (float) in degrees</div>
+            </div>
+
+            <div class="api-function">
+                <code>Rotate(x, y, z)</code>
+                <div class="description">Rotates the entity by the specified angles (relative rotation).</div>
+                <div class="params">Parameters: x, y, z (float) - Rotation delta in degrees</div>
+            </div>
+
+            <div class="api-function">
+                <code>LookAt(x, y, z)</code>
+                <div class="description">Rotates the entity to face a target position. Calculates yaw and pitch automatically.</div>
+                <div class="params">Parameters: x, y, z (float) - Target world position</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetScale(x, y, z)</code>
+                <div class="description">Sets the entity's scale (size multiplier).</div>
+                <div class="params">Parameters: x, y, z (float) - Scale factors (1.0 = normal size)</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetScale()</code>
+                <div class="description">Gets the current scale values.</div>
+                <div class="returns">→ Returns: x, y, z (float)</div>
+            </div>
+
+            <h4>⚡ Physics & RigidBody</h4>
+
+            <div class="api-function">
+                <code>SetVelocity(x, y, z)</code>
+                <div class="description">Directly sets the velocity of the RigidBody component. Overrides current motion.</div>
+                <div class="params">Parameters: x, y, z (float) - Velocity in units/second</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetVelocity()</code>
+                <div class="description">Gets the current velocity vector.</div>
+                <div class="returns">→ Returns: x, y, z (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>AddForce(x, y, z)</code>
+                <div class="description">Applies an impulse force to the entity (adds to existing velocity).</div>
+                <div class="params">Parameters: x, y, z (float) - Force vector</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetGravity(enabled)</code>
+                <div class="description">Enables or disables gravity for this RigidBody.</div>
+                <div class="params">Parameters: enabled (boolean)</div>
+            </div>
+
+            <div class="api-function">
+                <code>IsGrounded()</code>
+                <div class="description">Checks if the entity's collider is touching the ground (y ≤ height/2 + 0.1).</div>
+                <div class="returns">→ Returns: boolean</div>
+            </div>
+
+            <h4>🎨 Visual & Rendering</h4>
+
+            <div class="api-function">
+                <code>SetColor(r, g, b)</code>
+                <div class="description">Changes the mesh tint color. Values should be between 0.0 and 1.0.</div>
+                <div class="params">Parameters: r, g, b (float) - RGB values (0.0 to 1.0)</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetColor()</code>
+                <div class="description">Gets the current mesh color.</div>
+                <div class="returns">→ Returns: r, g, b (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>PlayAnim(name)</code>
+                <div class="description">Plays an animation from the MeshComponent's animation list.</div>
+                <div class="params">Parameters: name (string) - Animation name (e.g., "Walk", "Run", "Idle")</div>
+            </div>
+
+            <div class="api-function">
+                <code>StopAnim()</code>
+                <div class="description">Stops the currently playing animation.</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetAnimSpeed(speed)</code>
+                <div class="description">Changes the animation playback speed multiplier.</div>
+                <div class="params">Parameters: speed (float) - 1.0 = normal, 2.0 = double speed, 0.5 = half speed</div>
+            </div>
+
+            <h4>🔊 Audio System</h4>
+
+            <div class="api-function">
+                <code>PlayAudio(filepath)</code>
+                <div class="description">Plays a sound file once (fire-and-forget).</div>
+                <div class="params">Parameters: filepath (string) - Path to .wav file</div>
+            </div>
+
+            <div class="api-function">
+                <code>PlayAudioLoop(filepath)</code>
+                <div class="description">Plays a sound file in a continuous loop.</div>
+                <div class="params">Parameters: filepath (string) - Path to .wav file</div>
+            </div>
+
+            <div class="api-function">
+                <code>StopAudio()</code>
+                <div class="description">Stops all currently playing audio.</div>
+            </div>
+
+            <h4>🎯 Entity Management</h4>
+
+            <div class="api-function">
+                <code>Destroy()</code>
+                <div class="description">Destroys the current entity and all its components. Entity becomes invalid after this call.</div>
+            </div>
+
+            <div class="api-function">
+                <code>FindEntity(tag)</code>
+                <div class="description">Searches for an entity by its tag name.</div>
+                <div class="params">Parameters: tag (string) - Tag to search for (e.g., "Player", "Enemy")</div>
+                <div class="returns">→ Returns: entityID (number) or nil if not found</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetEntityPosition(entityID)</code>
+                <div class="description">Gets the position of any entity by its ID.</div>
+                <div class="params">Parameters: entityID (number) - Entity identifier</div>
+                <div class="returns">→ Returns: x, y, z (float)</div>
+            </div>
+
+            <h4>📐 Math Utilities</h4>
+
+            <div class="api-function">
+                <code>GetDistance(x1, y1, z1, x2, y2, z2)</code>
+                <div class="description">Calculates the 3D distance between two points.</div>
+                <div class="params">Parameters: Two sets of x, y, z coordinates</div>
+                <div class="returns">→ Returns: distance (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>Lerp(a, b, t)</code>
+                <div class="description">Linear interpolation between two values.</div>
+                <div class="params">Parameters: a, b (float) - Start and end values, t (float) - Interpolation factor (0-1)</div>
+                <div class="returns">→ Returns: interpolated value (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>Clamp(value, min, max)</code>
+                <div class="description">Restricts a value to a specified range.</div>
+                <div class="params">Parameters: value, min, max (float)</div>
+                <div class="returns">→ Returns: clamped value (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>Random()</code> or <code>Random(min, max)</code>
+                <div class="description">Generates a random number. Without parameters returns 0-1, with parameters returns value in range.</div>
+                <div class="returns">→ Returns: random value (float)</div>
+            </div>
+
+            <div class="api-function">
+                <code>Sin(angle)</code> / <code>Cos(angle)</code>
+                <div class="description">Trigonometric functions (angle in radians).</div>
+                <div class="returns">→ Returns: float</div>
+            </div>
+
+            <div class="api-function">
+                <code>Abs(value)</code> / <code>Sqrt(value)</code>
+                <div class="description">Absolute value and square root functions.</div>
+                <div class="returns">→ Returns: float</div>
+            </div>
+
+            <h4>📷 Camera</h4>
+
+            <div class="api-function">
+                <code>GetCameraPosition()</code>
+                <div class="description">Gets the position of the primary camera.</div>
+                <div class="returns">→ Returns: x, y, z (float)</div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Best Practice:</strong> Always multiply movement by <code>GetDeltaTime()</code> to ensure frame-rate independent gameplay. For example: <code>Translate(speed * GetDeltaTime(), 0, 0)</code>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="npc">
+    <div class="section">
+        <div class="section-header">
+            <h2>NPC AI System</h2>
+            <p class="subtitle">Personality-Driven Autonomous Characters</p>
+        </div>
+
+        <div class="section-intro">
+            The NPC system provides complete AI behavior with perception, personality traits, state machines, and social interactions. NPCs can patrol, chase, flee, attack, talk, and react dynamically to their environment and other entities.
+        </div>
+
+        <h3 style="margin: 30px 0 20px 0; font-size: 22pt;">Available NPC Types</h3>
+        <div class="npc-badges">
+            <span class="npc-type-badge badge-civilian">CIVILIAN_MALE</span>
+            <span class="npc-type-badge badge-civilian">CIVILIAN_FEMALE</span>
+            <span class="npc-type-badge badge-police">POLICE</span>
+            <span class="npc-type-badge badge-criminal">GANG_MEMBER</span>
+            <span class="npc-type-badge badge-guard">SECURITY_GUARD</span>
+            <span class="npc-type-badge badge-vendor">SHOP_KEEPER</span>
+            <span class="npc-type-badge badge-civilian">BUSINESS_PERSON</span>
+            <span class="npc-type-badge badge-vendor">TAXI_DRIVER</span>
+        </div>
+
+        <div class="api-section">
+            <h3>🎭 NPC Configuration</h3>
+
+            <div class="api-function">
+                <code>SetNPCType(type)</code>
+                <div class="description">Sets the NPC archetype which determines default behaviors and reactions.</div>
+                <div class="params">Parameters: type (string) - "CIVILIAN_MALE", "CIVILIAN_FEMALE", "POLICE", "GANG_MEMBER", "SECURITY_GUARD", "SHOP_KEEPER", "BUSINESS_PERSON", "TAXI_DRIVER"</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetNPCPersonality(aggression, fear, courage)</code>
+                <div class="description">Defines the NPC's personality traits which influence decision-making.</div>
+                <div class="params">Parameters: aggression (0-1) - Likelihood to attack, fear (0-1) - Likelihood to flee, courage (0-1) - Resistance to panic</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetNPCAnimations(idle, walk, run, attack, death)</code>
+                <div class="description">Assigns animation names for different NPC states.</div>
+                <div class="params">Parameters: All strings - Animation names from the model</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetNPCSpeed(walkSpeed, runSpeed)</code>
+                <div class="description">Sets movement speeds for walking and running states.</div>
+                <div class="params">Parameters: walkSpeed, runSpeed (float) - Units per second (typical: walk=1.5, run=5.0)</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetNPCStats(health, vision, hearing)</code>
+                <div class="description">Configures NPC health and sensory capabilities.</div>
+                <div class="params">Parameters: health (float) - Max HP, vision (float) - Vision range in units, hearing (float) - Audio detection range</div>
+            </div>
+
+            <h4>🎮 State Control</h4>
+
+            <div class="api-function">
+                <code>SetNPCState(state)</code>
+                <div class="description">Forces the NPC into a specific behavioral state.</div>
+                <div class="params">Parameters: state (string) - "IDLE", "WALKING", "RUNNING", "ATTACKING", "FLEEING", "DRIVING", "TALKING", "SITTING", "DANCING", "WORKING"</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetNPCState()</code>
+                <div class="description">Returns the current NPC state.</div>
+                <div class="returns">→ Returns: state (string)</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetNPCDestination(x, y, z)</code>
+                <div class="description">Makes the NPC walk to a target position. Automatically switches to WALKING state.</div>
+                <div class="params">Parameters: x, y, z (float) - Target world coordinates</div>
+            </div>
+
+            <div class="api-function">
+                <code>SetNPCTarget(entityID)</code>
+                <div class="description">Sets another entity as the NPC's target (for chasing, attacking, or following).</div>
+                <div class="params">Parameters: entityID (number) - Target entity identifier</div>
+            </div>
+
+            <div class="api-function">
+                <code>NPCDamage(amount)</code>
+                <div class="description">Applies damage to the NPC and triggers appropriate reactions based on personality.</div>
+                <div class="params">Parameters: amount (float) - Damage value</div>
+                <div class="returns">→ Returns: isDead (boolean)</div>
+            </div>
+
+            <div class="api-function">
+                <code>GetNPCHealth()</code>
+                <div class="description">Gets the NPC's current health value.</div>
+                <div class="returns">→ Returns: health (float)</div>
+            </div>
+
+            <h4>🔍 Perception & Detection</h4>
+
+            <div class="api-function">
+                <code>FindNearestEntity(tag, range)</code>
+                <div class="description">Finds the closest entity with a specific tag within range.</div>
+                <div class="params">Parameters: tag (string) - Tag to search for, range (float) - Search radius</div>
+                <div class="returns">→ Returns: entityID (number), distance (float) or nil if not found</div>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <strong>🎯 NPC Design Tip:</strong> Combine personality traits creatively! A high-courage, low-fear Guard will chase threats, while a high-fear Civilian will flee at the first sign of danger. Aggression + Courage = dangerous enemy, Fear + Low Courage = coward who runs immediately.
+        </div>
+    </div>
+</div>
+
+<div class="container" id="gta">
+    <div class="section">
+        <div class="section-header">
+            <h2>GTA-Style Systems</h2>
+            <p class="subtitle">Living World Mechanics & Advanced AI</p>
+        </div>
+
+        <div class="section-intro">
+            The GTA Behavior System brings your world to life with autonomous daily routines, crime simulation, witness reactions, police response, gang territories, and complex social relationships. NPCs live their lives independently, reacting dynamically to crimes and player actions.
+        </div>
+
+        <div class="api-section gta-api">
+            <h3>🏙️ Daily Life & Schedules</h3>
+
+            <div class="api-function new-api">
+                <code>AddDailyActivity(name, startHour, endHour, x, y, z)</code>
+                <div class="description">Adds a scheduled activity to the NPC's daily routine. NPCs will automatically pathfind to the location at the specified times.</div>
+                <div class="params">
+                    <strong>Parameters:</strong><br>
+                    • name (string) - Activity identifier (e.g., "Work", "Sleep", "Gym")<br>
+                    • startHour, endHour (float) - Time range in 24-hour format (0.0 to 24.0)<br>
+                    • x, y, z (float) - Activity location in world coordinates
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ Important:</strong> Activities are processed in order of start time. Overlapping schedules will use the first matching activity. Ensure your time ranges don't conflict unless intentional.
+            </div>
+
+            <h4>🚨 Crime & Police System</h4>
+
+            <div class="api-function new-api">
+                <code>ReportCrime(x, y, z, severity)</code>
+                <div class="description">Reports a crime to the global police system. Nearby NPCs will react as witnesses, and police will be dispatched based on severity.</div>
+                <div class="params">
+                    <strong>Parameters:</strong><br>
+                    • x, y, z (float) - Crime location<br>
+                    • severity (float) - Crime severity level (1-5)<br>
+                    &nbsp;&nbsp;1 = Minor (jaywalking, trespassing)<br>
+                    &nbsp;&nbsp;2 = Moderate (assault, theft)<br>
+                    &nbsp;&nbsp;3 = Serious (assault with weapon)<br>
+                    &nbsp;&nbsp;4 = Severe (murder, cop assault)<br>
+                    &nbsp;&nbsp;5 = Extreme (mass violence, terrorism)
+                </div>
+            </div>
+
+            <div class="api-function new-api">
+                <code>HasSeenPolice()</code>
+                <div class="description">Checks if the NPC has recently seen a police officer within their visual range.</div>
+                <div class="returns">→ Returns: boolean (true if police visible in last 10 seconds)</div>
+            </div>
+
+            <h4>👥 Social Relationships</h4>
+
+            <div class="api-function new-api">
+                <code>MakeFriend(entityID)</code>
+                <div class="description">Adds an entity to the NPC's friends list. Friends won't attack each other and may provide backup in combat.</div>
+                <div class="params">Parameters: entityID (number) - Entity to befriend</div>
+            </div>
+
+            <h4>🗺️ Navigation & Pathfinding</h4>
+
+            <div class="api-function new-api">
+                <code>MoveTo(x, y, z)</code>
+                <div class="description">Advanced pathfinding to target position. Uses A* algorithm with obstacle avoidance, traffic rules, and sidewalk preference.</div>
+                <div class="params">Parameters: x, y, z (float) - Destination coordinates</div>
+            </div>
+
+            <div class="info-box">
+                <strong>🧭 Pathfinding Details:</strong> The system automatically avoids obstacles, prefers sidewalks over roads, respects traffic lights, and uses crowd avoidance. NPCs will wait at crosswalks if a traffic light is red (unless they're criminals with low rule-following).
+            </div>
+        </div>
+
+        <h3 style="margin: 50px 0 25px 0; font-size: 24pt; color: var(--color-crime);">Crime Severity Reference</h3>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Severity</th>
+                    <th>Crime Type</th>
+                    <th>Police Response</th>
+                    <th>Witness Reaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1 - Minor</strong></td>
+                    <td>Jaywalking, Trespassing, Speeding</td>
+                    <td>1 patrol car (delayed)</td>
+                    <td>Ignore or mild concern</td>
+                </tr>
+                <tr>
+                    <td><strong>2 - Moderate</strong></td>
+                    <td>Assault, Vehicle Theft, Vandalism</td>
+                    <td>2 patrol cars</td>
+                    <td>Move away, call police</td>
+                </tr>
+                <tr>
+                    <td><strong>3 - Serious</strong></td>
+                    <td>Armed Assault, Weapon Discharge</td>
+                    <td>3-4 units, armed response</td>
+                    <td>Flee, panic, hide</td>
+                </tr>
+                <tr>
+                    <td><strong>4 - Severe</strong></td>
+                    <td>Murder, Cop Killing</td>
+                    <td>6+ units, SWAT dispatched</td>
+                    <td>Mass panic, stampede</td>
+                </tr>
+                <tr>
+                    <td><strong>5 - Extreme</strong></td>
+                    <td>Mass Shooting, Terrorism</td>
+                    <td>Full lockdown, helicopters</td>
+                    <td>City-wide alert, evacuation</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container" id="examples">
+    <div class="section">
+        <div class="section-header">
+            <h2>Code Examples</h2>
+            <p class="subtitle">Real-World Implementation Patterns</p>
+        </div>
+
+        <h3 style="font-size: 24pt; margin: 30px 0 20px 0;">🏢 Example 1: Business Person with Daily Routine</h3>
+        <div class="code-example">
+<div class="example-title">Office Worker - Complete Daily Schedule</div>
+<pre><span class="comment">-- Creates a realistic NPC with work-life balance</span>
+
 <span class="keyword">function</span> <span class="function">OnStart</span>()
+    <span class="comment">-- Configure as business professional</span>
     SetNPCType(<span class="string">"BUSINESS_PERSON"</span>)
-    SetNPCPersonality(<span class="number">0.1</span>, <span class="number">0.8</span>, <span class="number">0.2</span>) <span class="comment">-- Low aggression, High fear</span>
-
-    <span class="comment">-- Define Routine</span>
-    <span class="comment">-- 08:00 to 17:00 -> Work at Office</span>
-    AddDailyActivity(<span class="string">"Work"</span>, <span class="number">8.0</span>, <span class="number">17.0</span>, <span class="number">150.0</span>, <span class="number">0.0</span>, <span class="number">-40.0</span>)
+    SetNPCPersonality(<span class="number">0.1</span>, <span class="number">0.7</span>, <span class="number">0.3</span>)
+    <span class="comment">-- Low aggression, high fear (avoids conflict)</span>
     
-    <span class="comment">-- 17:00 to 19:00 -> Gym</span>
-    AddDailyActivity(<span class="string">"Gym"</span>, <span class="number">17.0</span>, <span class="number">19.0</span>, <span class="number">-20.0</span>, <span class="number">0.0</span>, <span class="number">50.0</span>)
+    <span class="comment">-- Set appropriate speeds</span>
+    SetNPCSpeed(<span class="number">1.8</span>, <span class="number">5.5</span>) <span class="comment">-- Slightly faster walk</span>
     
-    <span class="comment">-- 19:00 to 08:00 -> Home</span>
-    AddDailyActivity(<span class="string">"Sleep"</span>, <span class="number">19.0</span>, <span class="number">8.0</span>, <span class="number">10.0</span>, <span class="number">0.0</span>, <span class="number">10.0</span>)
+    <span class="comment">-- Configure animations</span>
+    SetNPCAnimations(<span class="string">"Idle_Office"</span>, <span class="string">"Walk_Business"</span>, 
+                      <span class="string">"Run"</span>, <span class="string">"Punch"</span>, <span class="string">"Death"</span>)
+    
+    <span class="comment">-- 🕐 Define Complete Daily Schedule</span>
+    
+    <span class="comment">-- 6:00 AM - Wake up at home</span>
+    AddDailyActivity(<span class="string">"Wake"</span>, <span class="number">6.0</span>, <span class="number">7.0</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="number">10</span>)
+    
+    <span class="comment">-- 7:00 AM - Coffee shop (morning routine)</span>
+    AddDailyActivity(<span class="string">"Coffee"</span>, <span class="number">7.0</span>, <span class="number">7.5</span>, <span class="number">45</span>, <span class="number">0</span>, <span class="number">-15</span>)
+    
+    <span class="comment">-- 8:00 AM - 5:00 PM - Work at office downtown</span>
+    AddDailyActivity(<span class="string">"Work"</span>, <span class="number">8.0</span>, <span class="number">17.0</span>, <span class="number">150</span>, <span class="number">0</span>, <span class="number">-40</span>)
+    
+    <span class="comment">-- 5:00 PM - 6:00 PM - Gym after work</span>
+    AddDailyActivity(<span class="string">"Gym"</span>, <span class="number">17.0</span>, <span class="number">18.0</span>, <span class="number">-20</span>, <span class="number">0</span>, <span class="number">50</span>)
+    
+    <span class="comment">-- 6:30 PM - 7:30 PM - Dinner at restaurant</span>
+    AddDailyActivity(<span class="string">"Dinner"</span>, <span class="number">18.5</span>, <span class="number">19.5</span>, <span class="number">80</span>, <span class="number">0</span>, <span class="number">25</span>)
+    
+    <span class="comment">-- 8:00 PM - 6:00 AM - Home (sleep)</span>
+    AddDailyActivity(<span class="string">"Sleep"</span>, <span class="number">20.0</span>, <span class="number">6.0</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="number">10</span>)
+    
+    print(<span class="string">"Business NPC initialized with daily schedule"</span>)
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
-    <span class="comment">-- AI System handles the movement automatically based on Game Time</span>
+    <span class="comment">-- React to danger (high fear personality)</span>
+    <span class="keyword">local</span> playerID = FindNearestEntity(<span class="string">"Player"</span>, <span class="number">15.0</span>)
+    
+    <span class="keyword">if</span> playerID ~= <span class="keyword">nil</span> <span class="keyword">then</span>
+        <span class="keyword">local</span> px, py, pz = GetEntityPosition(playerID)
+        <span class="keyword">local</span> mx, my, mz = GetPosition()
+        <span class="keyword">local</span> distance = GetDistance(mx, my, mz, px, py, pz)
+        
+        <span class="comment">-- If player is shooting nearby, flee immediately</span>
+        <span class="keyword">if</span> IsKeyDown(<span class="string">"F"</span>) <span class="keyword">and</span> distance < <span class="number">20.0</span> <span class="keyword">then</span>
+            SetNPCState(<span class="string">"FLEEING"</span>)
+            
+            <span class="comment">-- Run away from danger</span>
+            <span class="keyword">local</span> fleeDir = {
+                x = mx - px,
+                z = mz - pz
+            }
+            <span class="keyword">local</span> length = Sqrt(fleeDir.x * fleeDir.x + fleeDir.z * fleeDir.z)
+            fleeDir.x = fleeDir.x / length
+            fleeDir.z = fleeDir.z / length
+            
+            <span class="keyword">local</span> fleeDist = <span class="number">30.0</span>
+            SetNPCDestination(
+                mx + fleeDir.x * fleeDist,
+                my,
+                mz + fleeDir.z * fleeDist
+            )
+            
+            PlayAnim(<span class="string">"Run"</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Health check</span>
     <span class="keyword">if</span> GetNPCHealth() < <span class="number">20</span> <span class="keyword">then</span>
         SetNPCState(<span class="string">"FLEEING"</span>)
     <span class="keyword">end</span>
 <span class="keyword">end</span></pre>
-    </div>
+        </div>
 
-    <div class="code-example">
-<pre><span class="comment">-- Example 2: Crime Witness logic</span>
-<span class="keyword">local</span> reported = <span class="keyword">false</span>
+        <h3 style="font-size: 24pt; margin: 50px 0 20px 0;">🚨 Example 2: Crime Witness System</h3>
+        <div class="code-example">
+<div class="example-title">Civilian Witness - Reports Crimes to Police</div>
+<pre><span class="comment">-- Civilian who witnesses crimes and calls police</span>
 
-<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
-    <span class="comment">-- Check for nearby player</span>
-    <span class="keyword">local</span> playerID = FindNearestEntity(<span class="string">"Player"</span>, <span class="number">20.0</span>)
-    
-    <span class="keyword">if</span> playerID ~= <span class="keyword">nil</span> <span class="keyword">and</span> <span class="keyword">not</span> reported <span class="keyword">then</span>
-        <span class="comment">-- Imagine we detect the player shooting (game logic variable)</span>
-        <span class="keyword">local</span> playerIsShooting = IsKeyDown(<span class="string">"F"</span>) <span class="comment">-- Fake input check for example</span>
-        
-        <span class="keyword">if</span> playerIsShooting <span class="keyword">then</span>
-            <span class="keyword">local</span> x, y, z = GetEntityPosition(playerID)
-            
-            <span class="comment">-- Report crime to the global Police System</span>
-            ReportCrime(x, y, z, <span class="number">3.0</span>) <span class="comment">-- Severity 3 (Assault)</span>
-            
-            SetNPCState(<span class="string">"FLEEING"</span>)
-            PlayAnim(<span class="string">"CallPolice"</span>)
-            reported = <span class="keyword">true</span>
-        <span class="keyword">end</span>
-    <span class="keyword">end</span>
-<span class="keyword">end</span></pre>
-    </div>
+<span class="keyword">local</span> crimeReported = <span class="keyword">false</span>
+<span class="keyword">local</span> witnessedCrime = <span class="keyword">false</span>
+<span class="keyword">local</span> panicMode = <span class="keyword">false</span>
 
-    <div class="code-example">
-<pre><span class="comment">-- Example 3: Gang Member Behavior (Aggressive)</span>
 <span class="keyword">function</span> <span class="function">OnStart</span>()
-    SetNPCType(<span class="string">"GANG_MEMBER"</span>)
-    SetNPCPersonality(<span class="number">0.9</span>, <span class="number">0.1</span>, <span class="number">0.9</span>) <span class="comment">-- High aggression, Low fear</span>
+    SetNPCType(<span class="string">"CIVILIAN_MALE"</span>)
+    SetNPCPersonality(<span class="number">0.05</span>, <span class="number">0.85</span>, <span class="number">0.2</span>) <span class="comment">-- Very afraid, won't fight</span>
+    SetNPCSpeed(<span class="number">1.5</span>, <span class="number">6.0</span>)
+    SetNPCStats(<span class="number">80</span>, <span class="number">25.0</span>, <span class="number">30.0</span>) <span class="comment">-- Good hearing range</span>
     
-    <span class="comment">-- Add other gang members as friends so we don't attack them</span>
-    <span class="keyword">local</span> buddy = FindEntity(<span class="string">"GangMember2"</span>)
-    <span class="keyword">if</span> buddy ~= <span class="keyword">nil</span> <span class="keyword">then</span> MakeFriend(buddy) <span class="keyword">end</span>
+    StartTimer(<span class="string">"witness_check"</span>)
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
-    <span class="keyword">if</span> HasSeenPolice() <span class="keyword">then</span>
-        <span class="comment">-- Gang members attack police on sight</span>
-        <span class="keyword">local</span> cop = FindNearestEntity(<span class="string">"Police"</span>, <span class="number">30.0</span>)
-        <span class="keyword">if</span> cop ~= <span class="keyword">nil</span> <span class="keyword">then</span>
-            SetNPCTarget(cop)
-            SetNPCState(<span class="string">"ATTACKING"</span>)
+    <span class="comment">-- Look for nearby player</span>
+    <span class="keyword">local</span> playerID = FindNearestEntity(<span class="string">"Player"</span>, <span class="number">25.0</span>)
+    
+    <span class="keyword">if</span> playerID ~= <span class="keyword">nil</span> <span class="keyword">and</span> <span class="keyword">not</span> crimeReported <span class="keyword">then</span>
+        <span class="keyword">local</span> px, py, pz = GetEntityPosition(playerID)
+        <span class="keyword">local</span> mx, my, mz = GetPosition()
+        <span class="keyword">local</span> distance = GetDistance(mx, my, mz, px, py, pz)
+        
+        <span class="comment">-- Witness shooting (serious crime)</span>
+        <span class="keyword">if</span> IsKeyDown(<span class="string">"F"</span>) <span class="keyword">and</span> distance < <span class="number">20.0</span> <span class="keyword">then</span>
+            witnessedCrime = <span class="keyword">true</span>
+            panicMode = <span class="keyword">true</span>
+            
+            <span class="comment">-- Immediately report to police system</span>
+            ReportCrime(px, py, pz, <span class="number">3.0</span>) <span class="comment">-- Severity 3: Armed assault</span>
+            crimeReported = <span class="keyword">true</span>
+            
+            print(<span class="string">"[WITNESS] Crime reported to police!"</span>)
+            
+            <span class="comment">-- Play panic animation</span>
+            PlayAnim(<span class="string">"Panic"</span>)
+            SetNPCState(<span class="string">"FLEEING"</span>)
+            
+            <span class="comment">-- Run to safe distance</span>
+            <span class="keyword">local</span> safeX = mx + (mx - px) * <span class="number">2.0</span>
+            <span class="keyword">local</span> safeZ = mz + (mz - pz) * <span class="number">2.0</span>
+            SetNPCDestination(safeX, my, safeZ)
         <span class="keyword">end</span>
-    <span class="keyword">else</span>
-        <span class="comment">-- Idle logic</span>
+        
+        <span class="comment">-- Witness assault (moderate crime)</span>
+        <span class="keyword">local</span> nearbyNPC = FindNearestEntity(<span class="string">"NPC"</span>, <span class="number">5.0</span>)
+        <span class="keyword">if</span> nearbyNPC ~= <span class="keyword">nil</span> <span class="keyword">and</span> distance < <span class="number">8.0</span> <span class="keyword">then</span>
+            <span class="keyword">local</span> npcState = GetNPCState()
+            <span class="keyword">if</span> npcState == <span class="string">"ATTACKING"</span> <span class="keyword">then</span>
+                ReportCrime(px, py, pz, <span class="number">2.0</span>) <span class="comment">-- Severity 2: Assault</span>
+                crimeReported = <span class="keyword">true</span>
+                print(<span class="string">"[WITNESS] Assault reported!"</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- If crime reported, stay in panic mode for a while</span>
+    <span class="keyword">if</span> panicMode <span class="keyword">then</span>
+        <span class="keyword">local</span> panicTime = GetTimer(<span class="string">"witness_check"</span>)
+        <span class="keyword">if</span> panicTime > <span class="number">10.0</span> <span class="keyword">then</span>
+            panicMode = <span class="keyword">false</span>
+            SetNPCState(<span class="string">"IDLE"</span>)
+            PlayAnim(<span class="string">"Idle"</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Check if police arrived (witness feels safer)</span>
+    <span class="keyword">if</span> HasSeenPolice() <span class="keyword">and</span> panicMode <span class="keyword">then</span>
+        print(<span class="string">"[WITNESS] Police have arrived, feeling safer"</span>)
+        panicMode = <span class="keyword">false</span>
         SetNPCState(<span class="string">"IDLE"</span>)
     <span class="keyword">end</span>
 <span class="keyword">end</span></pre>
+        </div>
+
+        <h3 style="font-size: 24pt; margin: 50px 0 20px 0;">💀 Example 3: Gang Member AI</h3>
+        <div class="code-example">
+<div class="example-title">Aggressive Gang Member - Territory Defense</div>
+<pre><span class="comment">-- Gang member who defends territory and attacks police on sight</span>
+
+<span class="keyword">local</span> territoryCenter = {x = <span class="number">50</span>, y = <span class="number">0</span>, z = <span class="number">-30</span>}
+<span class="keyword">local</span> territoryRadius = <span class="number">40.0</span>
+<span class="keyword">local</span> gangMates = {}
+<span class="keyword">local</span> inCombat = <span class="keyword">false</span>
+
+<span class="keyword">function</span> <span class="function">OnStart</span>()
+    SetNPCType(<span class="string">"GANG_MEMBER"</span>)
+    SetNPCPersonality(<span class="number">0.95</span>, <span class="number">0.15</span>, <span class="number">0.9</span>) <span class="comment">-- High aggression, fearless</span>
+    SetNPCSpeed(<span class="number">2.0</span>, <span class="number">7.0</span>) <span class="comment">-- Fast runner</span>
+    SetNPCStats(<span class="number">150</span>, <span class="number">30.0</span>, <span class="number">35.0</span>) <span class="comment">-- Tough, alert</span>
+    
+    <span class="comment">-- Find and befriend other gang members</span>
+    <span class="keyword">local</span> gang1 = FindEntity(<span class="string">"GangMember2"</span>)
+    <span class="keyword">local</span> gang2 = FindEntity(<span class="string">"GangMember3"</span>)
+    
+    <span class="keyword">if</span> gang1 ~= <span class="keyword">nil</span> <span class="keyword">then</span> 
+        MakeFriend(gang1)
+        table.insert(gangMates, gang1)
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> gang2 ~= <span class="keyword">nil</span> <span class="keyword">then</span> 
+        MakeFriend(gang2)
+        table.insert(gangMates, gang2)
+    <span class="keyword">end</span>
+    
+    print(<span class="string">"[GANG] Territory patrol initialized"</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
+    <span class="keyword">local</span> mx, my, mz = GetPosition()
+    
+    <span class="comment">-- Check if in territory</span>
+    <span class="keyword">local</span> distFromCenter = GetDistance(
+        mx, my, mz,
+        territoryCenter.x, territoryCenter.y, territoryCenter.z
+    )
+    <span class="keyword">local</span> inTerritory = distFromCenter < territoryRadius
+    
+    <span class="comment">-- PRIORITY 1: Attack police on sight (gang vs cops)</span>
+    <span class="keyword">local</span> copID, copDist = FindNearestEntity(<span class="string">"Police"</span>, <span class="number">40.0</span>)
+    <span class="keyword">if</span> copID ~= <span class="keyword">nil</span> <span class="keyword">then</span>
+        print(<span class="string">"[GANG] Cop spotted! Engaging!"</span>)
+        SetNPCTarget(copID)
+        SetNPCState(<span class="string">"ATTACKING"</span>)
+        inCombat = <span class="keyword">true</span>
+        
+        <span class="comment">-- Report crime (gang attacking cop = high severity)</span>
+        <span class="keyword">local</span> cx, cy, cz = GetEntityPosition(copID)
+        ReportCrime(cx, cy, cz, <span class="number">4.0</span>) <span class="comment">-- Cop assault = severity 4</span>
+        
+        <span class="keyword">return</span> <span class="comment">-- Focus on combat</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- PRIORITY 2: Defend territory from intruders</span>
+    <span class="keyword">if</span> inTerritory <span class="keyword">then</span>
+        <span class="keyword">local</span> playerID, playerDist = FindNearestEntity(<span class="string">"Player"</span>, <span class="number">territoryRadius</span>)
+        
+        <span class="keyword">if</span> playerID ~= <span class="keyword">nil</span> <span class="keyword">and</span> playerDist < <span class="number">20.0</span> <span class="keyword">then</span>
+            <span class="comment">-- Warn player first time</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> inCombat <span class="keyword">then</span>
+                print(<span class="string">"[GANG] You're in our territory!"</span>)
+                SetNPCState(<span class="string">"TALKING"</span>)
+                LookAt(GetEntityPosition(playerID))
+                
+                <span class="comment">-- If player comes closer, attack</span>
+                <span class="keyword">if</span> playerDist < <span class="number">8.0</span> <span class="keyword">then</span>
+                    SetNPCTarget(playerID)
+                    SetNPCState(<span class="string">"ATTACKING"</span>)
+                    inCombat = <span class="keyword">true</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        <span class="comment">-- Outside territory: return to patrol</span>
+        <span class="keyword">if</span> GetNPCState() == <span class="string">"IDLE"</span> <span class="keyword">then</span>
+            SetNPCDestination(
+                territoryCenter.x + Random(<span class="number">-20</span>, <span class="number">20</span>),
+                territoryCenter.y,
+                territoryCenter.z + Random(<span class="number">-20</span>, <span class="number">20</span>)
+            )
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Health management</span>
+    <span class="keyword">local</span> health = GetNPCHealth()
+    <span class="keyword">if</span> health < <span class="number">40</span> <span class="keyword">and</span> inCombat <span class="keyword">then</span>
+        <span class="comment">-- Even tough gang members retreat when badly injured</span>
+        print(<span class="string">"[GANG] Retreating to cover!"</span>)
+        SetNPCState(<span class="string">"FLEEING"</span>)
+        
+        <span class="comment">-- Run back to territory center</span>
+        SetNPCDestination(territoryCenter.x, territoryCenter.y, territoryCenter.z)
+        inCombat = <span class="keyword">false</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></pre>
+        </div>
+
+        <h3 style="font-size: 24pt; margin: 50px 0 20px 0;">🚔 Example 4: Advanced Police AI</h3>
+        <div class="code-example">
+<div class="example-title">Police Officer - Dynamic Crime Response</div>
+<pre><span class="comment">-- Police officer who patrols, investigates crimes, and pursues suspects</span>
+
+<span class="keyword">local</span> patrolPoints = {
+    {x = <span class="number">0</span>, y = <span class="number">0</span>, z = <span class="number">0</span>},
+    {x = <span class="number">50</span>, y = <span class="number">0</span>, z = <span class="number">0</span>},
+    {x = <span class="number">50</span>, y = <span class="number">0</span>, z = <span class="number">50</span>},
+    {x = <span class="number">0</span>, y = <span class="number">0</span>, z = <span class="number">50</span>}
+}
+<span class="keyword">local</span> currentPatrolIndex = <span class="number">1</span>
+<span class="keyword">local</span> investigating = <span class="keyword">false</span>
+<span class="keyword">local</span> pursuitMode = <span class="keyword">false</span>
+
+<span class="keyword">function</span> <span class="function">OnStart</span>()
+    SetNPCType(<span class="string">"POLICE"</span>)
+    SetNPCPersonality(<span class="number">0.65</span>, <span class="number">0.25</span>, <span class="number">0.85</span>) <span class="comment">-- Aggressive but controlled</span>
+    SetNPCSpeed(<span class="number">2.0</span>, <span class="number">6.5</span>) <span class="comment">-- Fast response</span>
+    SetNPCStats(<span class="number">180</span>, <span class="number">40.0</span>, <span class="number">45.0</span>) <span class="comment">-- High awareness</span>
+    
+    SetNPCAnimations(<span class="string">"Idle_Cop"</span>, <span class="string">"Walk_Patrol"</span>, 
+                      <span class="string">"Run_Chase"</span>, <span class="string">"Arrest"</span>, <span class="string">"Death"</span>)
+    
+    <span class="comment">-- Start patrol route</span>
+    StartPatrolRoute()
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">StartPatrolRoute</span>()
+    <span class="keyword">local</span> nextPoint = patrolPoints[currentPatrolIndex]
+    MoveTo(nextPoint.x, nextPoint.y, nextPoint.z) <span class="comment">-- Uses advanced pathfinding</span>
+    SetNPCState(<span class="string">"WALKING"</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
+    <span class="keyword">local</span> mx, my, mz = GetPosition()
+    
+    <span class="comment">-- PRIORITY 1: Respond to active crimes</span>
+    <span class="keyword">local</span> criminalID, crimeDist = FindNearestEntity(<span class="string">"Criminal"</span>, <span class="number">50.0</span>)
+    
+    <span class="keyword">if</span> criminalID ~= <span class="keyword">nil</span> <span class="keyword">and</span> crimeDist < <span class="number">30.0</span> <span class="keyword">then</span>
+        investigating = <span class="keyword">true</span>
+        pursuitMode = <span class="keyword">true</span>
+        
+        <span class="keyword">local</span> cx, cy, cz = GetEntityPosition(criminalID)
+        <span class="keyword">local</span> distance = GetDistance(mx, my, mz, cx, cy, cz)
+        
+        <span class="comment">-- If close enough, attempt arrest</span>
+        <span class="keyword">if</span> distance < <span class="number">2.5</span> <span class="keyword">then</span>
+            SetNPCState(<span class="string">"ATTACKING"</span>) <span class="comment">-- Arrest animation</span>
+            PlayAnim(<span class="string">"Arrest"</span>)
+            print(<span class="string">"[POLICE] Attempting arrest!"</span>)
+            
+            <span class="comment">-- Apply arrest (in real game, this would remove wanted level)</span>
+            <span class="keyword">local</span> arrested = NPCDamage(criminalID, <span class="number">0</span>) <span class="comment">-- Just check without damage</span>
+        <span class="keyword">elseif</span> distance < <span class="number">15.0</span> <span class="keyword">then</span>
+            <span class="comment">-- Chase suspect</span>
+            SetNPCTarget(criminalID)
+            SetNPCState(<span class="string">"RUNNING"</span>)
+            PlayAnim(<span class="string">"Run_Chase"</span>)
+            
+            <span class="comment">-- Use pathfinding for smart chase</span>
+            MoveTo(cx, cy, cz)
+        <span class="keyword">else</span>
+            <span class="comment">-- Move to last known position</span>
+            SetNPCState(<span class="string">"RUNNING"</span>)
+            MoveTo(cx, cy, cz)
+        <span class="keyword">end</span>
+        
+        <span class="keyword">return</span> <span class="comment">-- Focus on pursuit</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- PRIORITY 2: Investigate suspicious activity</span>
+    <span class="keyword">local</span> suspectID = FindNearestEntity(<span class="string">"NPC"</span>, <span class="number">20.0</span>)
+    <span class="keyword">if</span> suspectID ~= <span class="keyword">nil</span> <span class="keyword">and</span> <span class="keyword">not</span> investigating <span class="keyword">then</span>
+        <span class="keyword">local</span> suspectState = GetNPCState(suspectID)
+        
+        <span class="comment">-- If NPC is fleeing or fighting, investigate</span>
+        <span class="keyword">if</span> suspectState == <span class="string">"FLEEING"</span> <span class="keyword">or</span> suspectState == <span class="string">"ATTACKING"</span> <span class="keyword">then</span>
+            investigating = <span class="keyword">true</span>
+            <span class="keyword">local</span> sx, sy, sz = GetEntityPosition(suspectID)
+            MoveTo(sx, sy, sz)
+            SetNPCState(<span class="string">"RUNNING"</span>)
+            print(<span class="string">"[POLICE] Investigating suspicious activity"</span>)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- PRIORITY 3: Normal patrol</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> investigating <span class="keyword">and</span> <span class="keyword">not</span> pursuitMode <span class="keyword">then</span>
+        <span class="keyword">local</span> currentPoint = patrolPoints[currentPatrolIndex]
+        <span class="keyword">local</span> distToPoint = GetDistance(
+            mx, my, mz,
+            currentPoint.x, currentPoint.y, currentPoint.z
+        )
+        
+        <span class="comment">-- Reached patrol point, move to next</span>
+        <span class="keyword">if</span> distToPoint < <span class="number">2.0</span> <span class="keyword">then</span>
+            currentPatrolIndex = currentPatrolIndex + <span class="number">1</span>
+            <span class="keyword">if</span> currentPatrolIndex > #patrolPoints <span class="keyword">then</span>
+                currentPatrolIndex = <span class="number">1</span>
+            <span class="keyword">end</span>
+            StartPatrolRoute()
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Give up chase if suspect escapes</span>
+    <span class="keyword">if</span> pursuitMode <span class="keyword">and</span> crimeDist > <span class="number">60.0</span> <span class="keyword">then</span>
+        print(<span class="string">"[POLICE] Suspect escaped"</span>)
+        pursuitMode = <span class="keyword">false</span>
+        investigating = <span class="keyword">false</span>
+        SetNPCState(<span class="string">"IDLE"</span>)
+        StartPatrolRoute()
+    <span class="keyword">end</span>
+<span class="keyword">end</span></pre>
+        </div>
+
+        <h3 style="font-size: 24pt; margin: 50px 0 20px 0;">🎮 Example 5: FPS Player Controller</h3>
+        <div class="code-example">
+<div class="example-title">Complete FPS Movement with Mouse Look</div>
+<pre><span class="comment">-- Full FPS controller with WASD movement, jumping, and mouse camera</span>
+
+<span class="keyword">local</span> moveSpeed = <span class="number">8.0</span>
+<span class="keyword">local</span> sprintSpeed = <span class="number">12.0</span>
+<span class="keyword">local</span> jumpForce = <span class="number">8.0</span>
+<span class="keyword">local</span> mouseSensitivity = <span class="number">0.1</span>
+
+<span class="keyword">local</span> cameraYaw = <span class="number">0.0</span>
+<span class="keyword">local</span> cameraPitch = <span class="number">0.0</span>
+<span class="keyword">local</span> isJumping = <span class="keyword">false</span>
+
+<span class="keyword">function</span> <span class="function">OnStart</span>()
+    <span class="comment">-- Lock mouse for FPS controls</span>
+    LockMouse(<span class="keyword">true</span>)
+    
+    <span class="comment">-- Setup player</span>
+    SetGravity(<span class="keyword">true</span>)
+    
+    print(<span class="string">"[PLAYER] FPS Controller initialized"</span>)
+    print(<span class="string">"Controls: WASD = Move, SHIFT = Sprint, SPACE = Jump, ESC = Exit"</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> <span class="function">OnUpdate</span>(dt)
+    <span class="comment">-- ESC to unlock mouse</span>
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"ESC"</span>) <span class="keyword">then</span>
+        LockMouse(<span class="keyword">false</span>)
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- === MOUSE LOOK ===</span>
+    <span class="keyword">local</span> deltaX, deltaY = GetMouseDelta()
+    cameraYaw = cameraYaw + deltaX * mouseSensitivity
+    cameraPitch = cameraPitch + deltaY * mouseSensitivity
+    
+    <span class="comment">-- Clamp pitch to prevent camera flipping</span>
+    cameraPitch = Clamp(cameraPitch, <span class="number">-89.0</span>, <span class="number">89.0</span>)
+    
+    SetRotation(cameraPitch, cameraYaw, <span class="number">0</span>)
+    
+    <span class="comment">-- === MOVEMENT ===</span>
+    <span class="keyword">local</span> currentSpeed = moveSpeed
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"SHIFT"</span>) <span class="keyword">then</span>
+        currentSpeed = sprintSpeed
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Get current position and rotation</span>
+    <span class="keyword">local</span> px, py, pz = GetPosition()
+    <span class="keyword">local</span> rotX, rotY, rotZ = GetRotation()
+    
+    <span class="comment">-- Calculate forward and right vectors</span>
+    <span class="keyword">local</span> yawRad = rotY * <span class="number">3.14159</span> / <span class="number">180.0</span>
+    <span class="keyword">local</span> forward = {
+        x = Sin(yawRad),
+        z = Cos(yawRad)
+    }
+    <span class="keyword">local</span> right = {
+        x = Cos(yawRad),
+        z = -Sin(yawRad)
+    }
+    
+    <span class="comment">-- WASD movement</span>
+    <span class="keyword">local</span> moveX = <span class="number">0</span>
+    <span class="keyword">local</span> moveZ = <span class="number">0</span>
+    
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"W"</span>) <span class="keyword">then</span>
+        moveX = moveX + forward.x
+        moveZ = moveZ + forward.z
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"S"</span>) <span class="keyword">then</span>
+        moveX = moveX - forward.x
+        moveZ = moveZ - forward.z
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"A"</span>) <span class="keyword">then</span>
+        moveX = moveX - right.x
+        moveZ = moveZ - right.z
+    <span class="keyword">end</span>
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"D"</span>) <span class="keyword">then</span>
+        moveX = moveX + right.x
+        moveZ = moveZ + right.z
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Normalize diagonal movement</span>
+    <span class="keyword">local</span> moveLength = Sqrt(moveX * moveX + moveZ * moveZ)
+    <span class="keyword">if</span> moveLength > <span class="number">0</span> <span class="keyword">then</span>
+        moveX = moveX / moveLength
+        moveZ = moveZ / moveLength
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Apply movement</span>
+    Translate(
+        moveX * currentSpeed * dt,
+        <span class="number">0</span>,
+        moveZ * currentSpeed * dt
+    )
+    
+    <span class="comment">-- === JUMPING ===</span>
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"SPACE"</span>) <span class="keyword">and</span> IsGrounded() <span class="keyword">and</span> <span class="keyword">not</span> isJumping <span class="keyword">then</span>
+        AddForce(<span class="number">0</span>, jumpForce, <span class="number">0</span>)
+        isJumping = <span class="keyword">true</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- Reset jump when grounded</span>
+    <span class="keyword">if</span> IsGrounded() <span class="keyword">then</span>
+        isJumping = <span class="keyword">false</span>
+    <span class="keyword">end</span>
+    
+    <span class="comment">-- === INTERACTION ===</span>
+    <span class="keyword">if</span> IsKeyDown(<span class="string">"E"</span>) <span class="keyword">then</span>
+        <span class="comment">-- Check for nearby interactable NPCs</span>
+        <span class="keyword">local</span> npcID, distance = FindNearestEntity(<span class="string">"NPC"</span>, <span class="number">3.0</span>)
+        <span class="keyword">if</span> npcID ~= <span class="keyword">nil</span> <span class="keyword">then</span>
+            print(<span class="string">"[PLAYER] Interacting with NPC"</span>)
+            <span class="comment">-- Trigger NPC dialogue or interaction</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span></pre>
+        </div>
+
+        <div class="tip-box">
+            <strong>🎓 Pro Tips:</strong>
+            <ul style="margin-top: 10px; padding-left: 20px;">
+                <li>Always multiply speeds by <code>GetDeltaTime()</code> for frame-independent movement</li>
+                <li>Use <code>FindNearestEntity()</code> with appropriate ranges to optimize performance</li>
+                <li>Combine personality traits to create unique NPC behaviors</li>
+                <li>Use daily schedules to make your world feel alive and realistic</li>
+                <li>Test crime reporting in different scenarios to balance police response</li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <div class="footer">
-    © 2025 Renderon Engine — Documentation Version 2.1<br>
-    Support: support@renderon.net | Discord: discord.gg/renderon
+    <p style="font-size: 13pt; margin-bottom: 10px;">
+        <strong>Renderon Engine</strong> - Documentation Version 2.1.0
+    </p>
+    <p>
+        Created with ❤️ for game developers | Support: <a href="mailto:support@renderon.net">support@renderon.net</a>
+    </p>
+    <p style="margin-top: 15px; font-size: 10pt; color: #999;">
+        © 2025 Renderon Technologies. All API functions subject to change. Check documentation for latest updates.
+    </p>
 </div>
+
+<div class="scroll-top" id="scrollTop">↑</div>
+
+<script>
+// Scroll to top button
+const scrollBtn = document.getElementById('scrollTop');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        scrollBtn.classList.add('visible');
+    } else {
+        scrollBtn.classList.remove('visible');
+    }
+});
+
+scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Smooth scroll for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+</script>
 
 </body>
 </html>
