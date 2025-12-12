@@ -1,127 +1,1060 @@
-RENDERON ENGINE LUA API REFERENCE (v2.1)
 ================================================================================
+RENDERON ENGINE - COMPLETE LUA API REFERENCE (v2.1.0)
+================================================================================
+
 CONTEXT:
-This API is for the "Renderon" game engine (C++ with Lua binding).
-Scripts are attached to entities (NPCs, Players, Objects).
-Main callback: function OnUpdate(dt) where dt is DeltaTime.
-Initialization: function OnStart() (optional).
+--------
+Renderon is a C++ game engine with Lua scripting support.
+Scripts are attached to entities (NPCs, Players, Objects, Vehicles).
+Each script runs in its own context with access to the entity's components.
+
+MAIN CALLBACKS:
+- function OnStart()   -- Called once when entity is created (optional)
+- function OnUpdate(dt) -- Called every frame (dt = delta time in seconds)
 
 ================================================================================
-1. CORE & TRANSFORM
+1. TIME & UTILITIES
 ================================================================================
--- Get/Set Position (World Space)
+
+float GetDeltaTime()
+    Returns time in seconds since last frame (typically ~0.016 for 60fps).
+    Essential for frame-rate independent movement.
+
+float GetTime()
+    Returns total elapsed time since game started in seconds.
+
+void StartTimer(string name)
+    Starts a named timer for measuring custom durations.
+    Example: StartTimer("cooldown")
+
+float GetTimer(string name)
+    Gets elapsed time for a named timer in seconds.
+    Example: local elapsed = GetTimer("cooldown")
+
+void print(...)
+    Prints to console. Accepts multiple arguments.
+    Example: print("Health:", health, "Position:", x, y, z)
+
+================================================================================
+2. INPUT SYSTEM
+================================================================================
+
+bool IsKeyDown(string key)
+    Checks if keyboard key is currently pressed.
+    
+    Available keys:
+    - Letters: "W", "A", "S", "D", "E", "Q", "R", "F", "T", "G"
+    - Numbers: "0" through "9"
+    - Modifiers: "SHIFT", "CTRL", "ALT"
+    - Special: "SPACE", "ENTER", "ESC", "TAB"
+    - Arrows: "UP", "DOWN", "LEFT", "RIGHT"
+    
+    Example: if IsKeyDown("W") then Translate(0, 0, speed * dt) end
+
+bool IsKeyPressed(string key)
+    Alias for IsKeyDown().
+
+bool IsMouseButton(int button)
+    Checks if mouse button is pressed.
+    0 = Left click, 1 = Right click, 2 = Middle click
+    
+    Example: if IsMouseButton(0) then Fire() end
+
+float, float GetMousePos()
+    Returns current mouse position in screen coordinates.
+    Returns: x, y (floats)
+
+float, float GetMouseDelta()
+    Returns mouse movement since last frame.
+    Perfect for FPS camera controls.
+    Returns: deltaX, deltaY (floats)
+    
+    Example: 
+    local dx, dy = GetMouseDelta()
+    cameraYaw = cameraYaw + dx * sensitivity
+
+void LockMouse(bool locked)
+    Locks/unlocks mouse cursor (GLFW_CURSOR_DISABLED mode).
+    When locked, cursor is hidden and centered for FPS controls.
+    
+    Example: LockMouse(true) -- Lock for FPS mode
+
+void SetMousePos(float x, float y)
+    Manually sets mouse cursor position in screen coordinates.
+
+================================================================================
+3. TRANSFORM SYSTEM
+================================================================================
+
 float, float, float GetPosition()
+    Gets current world position of entity.
+    Returns: x, y, z (floats)
+    
+    Example: local x, y, z = GetPosition()
+
 void SetPosition(float x, float y, float z)
+    Instantly teleports entity to world position.
+    
+    Example: SetPosition(100, 0, 50)
 
--- Relative Movement
 void Translate(float dx, float dy, float dz)
+    Moves entity by offset (relative movement).
+    ALWAYS multiply by GetDeltaTime() for frame-independent movement!
+    
+    Example: Translate(speed * GetDeltaTime(), 0, 0)
 
--- Rotation (Euler Angles in Degrees)
 float, float, float GetRotation()
+    Gets current rotation in Euler angles (degrees).
+    Returns: pitch (x), yaw (y), roll (z)
+
 void SetRotation(float x, float y, float z)
+    Sets entity rotation in Euler angles (degrees).
+    x = pitch, y = yaw, z = roll
+    
+    Example: SetRotation(0, 90, 0) -- Face east
+
 void Rotate(float dx, float dy, float dz)
+    Rotates entity by angles (relative rotation in degrees).
+    
+    Example: Rotate(0, rotSpeed * GetDeltaTime(), 0) -- Spin
+
 void LookAt(float targetX, float targetY, float targetZ)
+    Rotates entity to face target position.
+    Automatically calculates yaw and pitch.
+    
+    Example: 
+    local px, py, pz = GetEntityPosition(playerID)
+    LookAt(px, py, pz)
 
--- Scale
 float, float, float GetScale()
+    Gets current scale values.
+    Returns: scaleX, scaleY, scaleZ
+
 void SetScale(float x, float y, float z)
-
--- Entity Management
-void Destroy() -- Destroys self
-int FindEntity(string tag) -- Returns EntityID or nil
-float, float, float GetEntityPosition(int entityID)
-float GetDistance(x1, y1, z1, x2, y2, z2)
+    Sets entity scale (1.0 = normal size).
+    
+    Example: SetScale(2.0, 2.0, 2.0) -- Double size
 
 ================================================================================
-2. PHYSICS & INPUT
+4. PHYSICS & RIGIDBODY
 ================================================================================
--- Input
-bool IsKeyDown(string key) -- Keys: "W","A","S","D","SPACE","SHIFT","CTRL","E","F","ENTER","ESC"
-bool IsMouseButton(int button) -- 0: Left, 1: Right, 2: Middle
-float GetDeltaTime() -- Time in seconds since last frame
-float GetTime() -- Total game time
 
--- Physics (RigidBody)
 void SetVelocity(float x, float y, float z)
+    Directly sets RigidBody velocity (overrides current motion).
+    Units per second.
+    
+    Example: SetVelocity(0, jumpSpeed, 0)
+
 float, float, float GetVelocity()
+    Gets current velocity vector.
+    Returns: vx, vy, vz (floats)
+
 void AddForce(float x, float y, float z)
+    Applies impulse force (adds to existing velocity).
+    
+    Example: AddForce(0, 10, 0) -- Jump impulse
+
 void SetGravity(bool enabled)
+    Enables/disables gravity for this RigidBody.
+    
+    Example: SetGravity(true)
+
 bool IsGrounded()
+    Checks if entity's collider is touching ground.
+    Useful for jump mechanics.
+    
+    Example: 
+    if IsKeyDown("SPACE") and IsGrounded() then
+        AddForce(0, jumpForce, 0)
+    end
 
 ================================================================================
-3. VISUALS & ANIMATION
+5. VISUALS, MATERIALS & ANIMATIONS
 ================================================================================
-void SetColor(float r, float g, float b) -- 0.0 to 1.0 range
-void PlayAnim(string animName) -- Plays animation defined in MeshComponent
+
+void SetColor(float r, float g, float b)
+    Changes mesh tint color (0.0 to 1.0 range).
+    
+    Example: SetColor(1.0, 0.0, 0.0) -- Red tint
+
+float, float, float GetColor()
+    Gets current mesh color.
+    Returns: r, g, b (floats 0-1)
+
+void PlayAnim(string animName)
+    Plays animation from MeshComponent's animation list.
+    Animation must exist in the loaded model.
+    
+    Example: PlayAnim("Walk")
+
 void StopAnim()
+    Stops currently playing animation.
+
 void SetAnimSpeed(float speed)
+    Changes animation playback speed multiplier.
+    1.0 = normal, 2.0 = double speed, 0.5 = half speed
+    
+    Example: SetAnimSpeed(1.5) -- 50% faster
 
 ================================================================================
-4. AUDIO
+6. AUDIO SYSTEM
 ================================================================================
+
 void PlayAudio(string filepath)
+    Plays sound file once (fire-and-forget).
+    Supports .wav files.
+    
+    Example: PlayAudio("assets/sounds/gunshot.wav")
+
 void PlayAudioLoop(string filepath)
+    Plays sound file in continuous loop.
+    
+    Example: PlayAudioLoop("assets/music/theme.wav")
+
 void StopAudio()
+    Stops all currently playing audio.
 
 ================================================================================
-5. NPC AI & GTA SYSTEM
+7. ENTITY MANAGEMENT
 ================================================================================
--- Configuration
+
+void Destroy()
+    Destroys current entity and all its components.
+    Entity becomes invalid after this call.
+    
+    Example: if GetNPCHealth() <= 0 then Destroy() end
+
+int FindEntity(string tag)
+    Searches for first entity with specified tag.
+    Returns entity ID or nil if not found.
+    
+    Example: 
+    local playerID = FindEntity("Player")
+    if playerID ~= nil then ... end
+
+float, float, float GetEntityPosition(int entityID)
+    Gets position of any entity by its ID.
+    Returns: x, y, z (floats)
+    
+    Example: 
+    local px, py, pz = GetEntityPosition(playerID)
+
+================================================================================
+8. MATH UTILITIES
+================================================================================
+
+float GetDistance(float x1, float y1, float z1, float x2, float y2, float z2)
+    Calculates 3D distance between two points.
+    Returns: distance (float)
+    
+    Example: 
+    local dist = GetDistance(mx, my, mz, px, py, pz)
+    if dist < 10.0 then ... end
+
+float Lerp(float a, float b, float t)
+    Linear interpolation between two values.
+    t should be between 0 and 1.
+    Returns: interpolated value
+    
+    Example: 
+    local smoothValue = Lerp(currentValue, targetValue, 0.1)
+
+float Clamp(float value, float min, float max)
+    Restricts value to specified range.
+    Returns: clamped value
+    
+    Example: 
+    health = Clamp(health, 0, maxHealth)
+
+float Random() or float Random(float min, float max)
+    Generates random number.
+    No args: returns 0.0 to 1.0
+    With args: returns value between min and max
+    
+    Example: 
+    local chance = Random()
+    local spawnX = Random(-50, 50)
+
+float Sin(float angle)
+float Cos(float angle)
+    Trigonometric functions (angle in radians).
+    
+    Example: 
+    local x = Cos(time) * radius
+    local z = Sin(time) * radius
+
+float Abs(float value)
+    Returns absolute value.
+
+float Sqrt(float value)
+    Returns square root.
+
+================================================================================
+9. CAMERA SYSTEM
+================================================================================
+
+float, float, float GetCameraPosition()
+    Gets position of primary camera.
+    Returns: x, y, z (floats)
+    
+    Example: 
+    local cx, cy, cz = GetCameraPosition()
+    local distToCamera = GetDistance(mx, my, mz, cx, cy, cz)
+
+================================================================================
+10. NPC AI SYSTEM
+================================================================================
+
+--- CONFIGURATION ---
+
 void SetNPCType(string type)
-  -- Types: "CIVILIAN_MALE", "CIVILIAN_FEMALE", "POLICE", "GANG_MEMBER",
-  --        "SECURITY_GUARD", "SHOP_KEEPER", "BUSINESS_PERSON"
+    Sets NPC archetype (determines default behaviors).
+    
+    Available types:
+    - "CIVILIAN_MALE"      -- Passive, avoids conflict
+    - "CIVILIAN_FEMALE"    -- Passive, high fear response
+    - "POLICE"             -- Law enforcement, arrests criminals
+    - "GANG_MEMBER"        -- Aggressive, territorial
+    - "SECURITY_GUARD"     -- Patrols, medium aggression
+    - "SHOP_KEEPER"        -- Stays near location, talks to customers
+    - "BUSINESS_PERSON"    -- Office worker, follows schedule
+    - "TAXI_DRIVER"        -- Drives vehicle, picks up passengers
+    
+    Example: SetNPCType("POLICE")
 
-void SetNPCPersonality(float aggression, float fear, float courage) -- 0.0 to 1.0
+void SetNPCPersonality(float aggression, float fear, float courage)
+    Defines personality traits (all values 0.0 to 1.0).
+    
+    - aggression: Likelihood to attack (0=passive, 1=very aggressive)
+    - fear: Likelihood to flee (0=fearless, 1=runs easily)
+    - courage: Resistance to panic (0=coward, 1=brave)
+    
+    Example: SetNPCPersonality(0.9, 0.1, 0.9) -- Fearless warrior
 
--- State Control
+void SetNPCAnimations(string idle, string walk, string run, string attack, string death)
+    Assigns animation names for different NPC states.
+    Animations must exist in the model's animation list.
+    
+    Example: 
+    SetNPCAnimations("Idle", "Walk", "Run", "Punch", "Death")
+
+void SetNPCSpeed(float walkSpeed, float runSpeed)
+    Sets movement speeds in units per second.
+    Typical values: walk=1.5-2.0, run=5.0-7.0
+    
+    Example: SetNPCSpeed(1.8, 6.0)
+
+void SetNPCStats(float health, float visionRange, float hearingRange)
+    Configures NPC health and sensory capabilities.
+    Vision and hearing ranges in world units.
+    
+    Example: SetNPCStats(120, 30.0, 35.0)
+
+--- STATE CONTROL ---
+
 void SetNPCState(string state)
-  -- States: "IDLE", "WALKING", "RUNNING", "ATTACKING", "FLEEING", "DRIVING", "DEAD"
+    Forces NPC into specific behavioral state.
+    
+    Available states:
+    - "IDLE"      -- Standing still, looking around
+    - "WALKING"   -- Moving at walk speed to destination
+    - "RUNNING"   -- Moving at run speed (chase/flee)
+    - "ATTACKING" -- In combat, attacking target
+    - "FLEEING"   -- Running away from danger
+    - "DRIVING"   -- Inside vehicle, driving
+    - "TALKING"   -- In conversation
+    - "SITTING"   -- Sitting animation
+    - "DANCING"   -- Dancing animation
+    - "WORKING"   -- Working at job location
+    - "DEAD"      -- Death state, no longer active
+    
+    Example: SetNPCState("FLEEING")
 
 string GetNPCState()
+    Returns current NPC state as string.
+    
+    Example: 
+    local state = GetNPCState()
+    if state == "ATTACKING" then ... end
 
--- Navigation & Pathfinding
-void MoveTo(float x, float y, float z) -- Uses A* Pathfinding
-void SetNPCDestination(float x, float y, float z) -- Simple wander target
-void SetNPCTarget(int entityID) -- Set target for attacking/chasing
+void SetNPCDestination(float x, float y, float z)
+    Makes NPC walk to target position (simple, no pathfinding).
+    Automatically switches to WALKING state.
+    
+    Example: SetNPCDestination(50, 0, -20)
 
--- Perception
-int FindNearestEntity(string tag, float range)
-bool HasSeenPolice() -- Returns true if Police NPC is visible nearby
+void SetNPCTarget(int entityID)
+    Sets another entity as NPC's target for chasing/attacking/following.
+    
+    Example: 
+    local playerID = FindEntity("Player")
+    SetNPCTarget(playerID)
 
--- GTA Life Sim Features
+--- HEALTH & DAMAGE ---
+
+float GetNPCHealth()
+    Returns NPC's current health value.
+    
+    Example: 
+    if GetNPCHealth() < 30 then
+        SetNPCState("FLEEING")
+    end
+
+bool NPCDamage(float amount)
+    Applies damage to NPC and triggers reactions based on personality.
+    Returns true if NPC died from damage.
+    
+    Example: 
+    local died = NPCDamage(25.0)
+    if died then print("NPC eliminated") end
+
+--- PERCEPTION & DETECTION ---
+
+int, float FindNearestEntity(string tag, float range)
+    Finds closest entity with specific tag within search radius.
+    Returns: entityID, distance (or nil if not found)
+    
+    Example: 
+    local enemyID, distance = FindNearestEntity("Enemy", 30.0)
+    if enemyID ~= nil and distance < 10.0 then
+        SetNPCTarget(enemyID)
+        SetNPCState("ATTACKING")
+    end
+
+--- PATROL (DEPRECATED - Use MoveTo or SetNPCDestination) ---
+
+void AddPatrolPoint(float x, float y, float z)
+void StartPatrol()
+void StopPatrol()
+    Note: These functions are deprecated in Components.hpp.
+    Use daily schedules or manual waypoint logic instead.
+
+================================================================================
+11. GTA-STYLE SYSTEMS (ADVANCED AI)
+================================================================================
+
+--- DAILY LIFE & SCHEDULES ---
+
 void AddDailyActivity(string name, float startHour, float endHour, float x, float y, float z)
-  -- Automatically schedules movement/behavior based on game time.
+    Adds scheduled activity to NPC's daily routine.
+    NPCs automatically pathfind to location at specified times.
+    
+    Parameters:
+    - name: Activity identifier (e.g., "Work", "Sleep", "Gym")
+    - startHour, endHour: Time range in 24-hour format (0.0 to 24.0)
+    - x, y, z: Activity location in world coordinates
+    
+    Example:
+    -- Office work 9AM to 5PM
+    AddDailyActivity("Work", 9.0, 17.0, 150, 0, -40)
+    -- Gym 5PM to 6PM
+    AddDailyActivity("Gym", 17.0, 18.0, -20, 0, 50)
+    -- Home/sleep 8PM to 6AM
+    AddDailyActivity("Sleep", 20.0, 6.0, 10, 0, 10)
+    
+    Note: Activities are sorted by start time. NPCs follow schedule automatically.
+
+--- CRIME & POLICE SYSTEM ---
 
 void ReportCrime(float x, float y, float z, float severity)
-  -- Severity: 1 (Low) to 5 (High). Alerts nearby police.
+    Reports crime to global police system.
+    Nearby NPCs react as witnesses, police are dispatched.
+    
+    Severity levels:
+    1 = Minor (jaywalking, trespassing, speeding)
+    2 = Moderate (assault, vehicle theft, vandalism)
+    3 = Serious (armed assault, weapon discharge)
+    4 = Severe (murder, cop killing)
+    5 = Extreme (mass shooting, terrorism)
+    
+    Example:
+    local px, py, pz = GetEntityPosition(playerID)
+    ReportCrime(px, py, pz, 3.0) -- Report serious crime
+    
+    Police response increases with severity:
+    - Level 1: 1 patrol car (delayed)
+    - Level 2: 2 patrol cars
+    - Level 3: 3-4 units, armed response
+    - Level 4: 6+ units, SWAT
+    - Level 5: Full lockdown, helicopters
 
-void MakeFriend(int entityID) -- Prevents aggression, enables teaming up.
+bool HasSeenPolice()
+    Checks if NPC has recently seen police officer within visual range.
+    Returns true if police visible in last 10 seconds.
+    
+    Example:
+    if HasSeenPolice() and isCriminal then
+        SetNPCState("FLEEING")
+        -- Run away from law enforcement
+    end
 
--- Stats
-float GetNPCHealth()
-void NPCDamage(float amount)
+--- SOCIAL RELATIONSHIPS ---
+
+void MakeFriend(int entityID)
+    Adds entity to NPC's friends list.
+    Friends won't attack each other and may provide backup in combat.
+    
+    Example:
+    local buddy = FindEntity("GangMember2")
+    if buddy ~= nil then
+        MakeFriend(buddy) -- Now allies
+    end
+
+--- NAVIGATION & PATHFINDING ---
+
+void MoveTo(float x, float y, float z)
+    Advanced A* pathfinding to target position.
+    Features:
+    - Obstacle avoidance
+    - Traffic rule compliance
+    - Sidewalk preference
+    - Crowd avoidance
+    - Traffic light respect
+    
+    NPCs will automatically:
+    - Wait at red traffic lights (unless criminal)
+    - Use crosswalks when available
+    - Avoid other NPCs and obstacles
+    - Take shortest safe path
+    
+    Example:
+    MoveTo(100, 0, 50) -- Navigate to coordinates
+    
+    Note: Much smarter than SetNPCDestination() which uses simple direct movement.
 
 ================================================================================
-EXAMPLE SNIPPETS
+12. CRIME SEVERITY REFERENCE TABLE
 ================================================================================
 
--- 1. Simple Patrolling Guard
+SEVERITY | CRIME TYPE                    | POLICE RESPONSE         | WITNESS REACTION
+---------|-------------------------------|-------------------------|------------------
+1 Minor  | Jaywalking, Trespassing       | 1 patrol car (delayed)  | Ignore/mild concern
+2 Mod.   | Assault, Theft, Vandalism     | 2 patrol cars           | Move away, call police
+3 Ser.   | Armed Assault, Weapon Fire    | 3-4 units, armed        | Flee, panic, hide
+4 Severe | Murder, Cop Killing           | 6+ units, SWAT          | Mass panic, stampede
+5 Extreme| Mass Shooting, Terrorism      | Full lockdown, helicopters | City-wide alert
+
+================================================================================
+13. COMPLETE EXAMPLES
+================================================================================
+
+--- Example 1: Business Person with Daily Schedule ---
+
+-- Creates a realistic NPC with work-life balance
+
+function OnStart()
+    -- Configure as business professional
+    SetNPCType("BUSINESS_PERSON")
+    SetNPCPersonality(0.1, 0.7, 0.3) -- Low aggression, high fear
+    SetNPCSpeed(1.8, 5.5)
+    SetNPCAnimations("Idle_Office", "Walk_Business", "Run", "Punch", "Death")
+    
+    -- Define Complete Daily Schedule
+    AddDailyActivity("Wake", 6.0, 7.0, 10, 0, 10)      -- 6:00 AM - Wake up
+    AddDailyActivity("Coffee", 7.0, 7.5, 45, 0, -15)   -- 7:00 AM - Coffee shop
+    AddDailyActivity("Work", 8.0, 17.0, 150, 0, -40)   -- 8:00 AM - Work
+    AddDailyActivity("Gym", 17.0, 18.0, -20, 0, 50)    -- 5:00 PM - Gym
+    AddDailyActivity("Dinner", 18.5, 19.5, 80, 0, 25)  -- 6:30 PM - Dinner
+    AddDailyActivity("Sleep", 20.0, 6.0, 10, 0, 10)    -- 8:00 PM - Sleep
+    
+    print("Business NPC initialized with daily schedule")
+end
+
 function OnUpdate(dt)
-    if HasSeenPolice() then
-        PlayAnim("Wave")
-    else
-        -- Patrol logic
-        local time = GetTime()
-        local x = math.sin(time) * 10
-        MoveTo(x, 0, 0)
+    -- React to danger (high fear personality)
+    local playerID = FindNearestEntity("Player", 15.0)
+    
+    if playerID ~= nil then
+        local px, py, pz = GetEntityPosition(playerID)
+        local mx, my, mz = GetPosition()
+        local distance = GetDistance(mx, my, mz, px, py, pz)
+        
+        -- If player is shooting nearby, flee immediately
+        if IsKeyDown("F") and distance < 20.0 then
+            SetNPCState("FLEEING")
+            
+            -- Calculate flee direction
+            local fleeX = mx + (mx - px) * 2.0
+            local fleeZ = mz + (mz - pz) * 2.0
+            SetNPCDestination(fleeX, my, fleeZ)
+            PlayAnim("Run")
+        end
+    end
+    
+    -- Health check
+    if GetNPCHealth() < 20 then
+        SetNPCState("FLEEING")
     end
 end
 
--- 2. GTA Civilian Schedule
+--- Example 2: Crime Witness System ---
+
+-- Civilian who witnesses crimes and calls police
+
+local crimeReported = false
+local witnessedCrime = false
+local panicMode = false
+
 function OnStart()
     SetNPCType("CIVILIAN_MALE")
-    -- Work 9-5
-    AddDailyActivity("Work", 9.0, 17.0, 100, 0, -50)
-    -- Bar 5-10
-    AddDailyActivity("Bar", 17.0, 22.0, -20, 0, 30)
+    SetNPCPersonality(0.05, 0.85, 0.2) -- Very afraid, won't fight
+    SetNPCSpeed(1.5, 6.0)
+    SetNPCStats(80, 25.0, 30.0) -- Good hearing range
+    StartTimer("witness_check")
 end
+
+function OnUpdate(dt)
+    -- Look for nearby player
+    local playerID = FindNearestEntity("Player", 25.0)
+    
+    if playerID ~= nil and not crimeReported then
+        local px, py, pz = GetEntityPosition(playerID)
+        local mx, my, mz = GetPosition()
+        local distance = GetDistance(mx, my, mz, px, py, pz)
+        
+        -- Witness shooting (serious crime)
+        if IsKeyDown("F") and distance < 20.0 then
+            witnessedCrime = true
+            panicMode = true
+            
+            -- Immediately report to police system
+            ReportCrime(px, py, pz, 3.0) -- Severity 3: Armed assault
+            crimeReported = true
+            
+            print("[WITNESS] Crime reported to police!")
+            
+            -- Play panic animation
+            PlayAnim("Panic")
+            SetNPCState("FLEEING")
+            
+            -- Run to safe distance
+            local safeX = mx + (mx - px) * 2.0
+            local safeZ = mz + (mz - pz) * 2.0
+            SetNPCDestination(safeX, my, safeZ)
+        end
+    end
+    
+    -- If crime reported, stay in panic mode for a while
+    if panicMode then
+        local panicTime = GetTimer("witness_check")
+        if panicTime > 10.0 then
+            panicMode = false
+            SetNPCState("IDLE")
+            PlayAnim("Idle")
+        end
+    end
+    
+    -- Check if police arrived (witness feels safer)
+    if HasSeenPolice() and panicMode then
+        print("[WITNESS] Police have arrived, feeling safer")
+        panicMode = false
+        SetNPCState("IDLE")
+    end
+end
+
+--- Example 3: Gang Member Territory Defense ---
+
+local territoryCenter = {x = 50, y = 0, z = -30}
+local territoryRadius = 40.0
+local gangMates = {}
+local inCombat = false
+
+function OnStart()
+    SetNPCType("GANG_MEMBER")
+    SetNPCPersonality(0.95, 0.15, 0.9) -- High aggression, fearless
+    SetNPCSpeed(2.0, 7.0)
+    SetNPCStats(150, 30.0, 35.0)
+    
+    -- Find and befriend other gang members
+    local gang1 = FindEntity("GangMember2")
+    local gang2 = FindEntity("GangMember3")
+    
+    if gang1 ~= nil then 
+        MakeFriend(gang1)
+        table.insert(gangMates, gang1)
+    end
+    if gang2 ~= nil then 
+        MakeFriend(gang2)
+        table.insert(gangMates, gang2)
+    end
+    
+    print("[GANG] Territory patrol initialized")
+end
+
+function OnUpdate(dt)
+    local mx, my, mz = GetPosition()
+    
+    -- Check if in territory
+    local distFromCenter = GetDistance(mx, my, mz, 
+                                       territoryCenter.x, 
+                                       territoryCenter.y, 
+                                       territoryCenter.z)
+    
+    -- PRIORITY 1: Attack police on sight
+    local copID, copDist = FindNearestEntity("Police", 40.0)
+    if copID ~= nil then
+        print("[GANG] Cop spotted! Engaging!")
+        SetNPCTarget(copID)
+        SetNPCState("ATTACKING")
+        inCombat = true
+        
+        local cx, cy, cz = GetEntityPosition(copID)
+        ReportCrime(cx, cy, cz, 4.0) -- Cop assault = severity 4
+        return
+    end
+    
+    -- PRIORITY 2: Defend territory
+    if distFromCenter < territoryRadius then
+        local playerID, playerDist = FindNearestEntity("Player", territoryRadius)
+        
+        if playerID ~= nil and playerDist < 20.0 then
+            if not inCombat then
+                print("[GANG] You're in our territory!")
+                SetNPCState("TALKING")
+                local px, py, pz = GetEntityPosition(playerID)
+                LookAt(px, py, pz)
+                
+                -- If player comes closer, attack
+                if playerDist < 8.0 then
+                    SetNPCTarget(playerID)
+                    SetNPCState("ATTACKING")
+                    inCombat = true
+                end
+            end
+        end
+    else
+        -- Return to territory
+        if GetNPCState() == "IDLE" then
+            local randX = territoryCenter.x + Random(-20, 20)
+            local randZ = territoryCenter.z + Random(-20, 20)
+            SetNPCDestination(randX, territoryCenter.y, randZ)
+        end
+    end
+    
+    -- Health management
+    local health = GetNPCHealth()
+    if health < 40 and inCombat then
+        print("[GANG] Retreating to cover!")
+        SetNPCState("FLEEING")
+        SetNPCDestination(territoryCenter.x, territoryCenter.y, territoryCenter.z)
+        inCombat = false
+    end
+end
+
+--- Example 4: Police Officer with Patrol ---
+
+local patrolPoints = {
+    {x = 0, y = 0, z = 0},
+    {x = 50, y = 0, z = 0},
+    {x = 50, y = 0, z = 50},
+    {x = 0, y = 0, z = 50}
+}
+local currentPatrolIndex = 1
+local investigating = false
+local pursuitMode = false
+
+function OnStart()
+    SetNPCType("POLICE")
+    SetNPCPersonality(0.65, 0.25, 0.85)
+    SetNPCSpeed(2.0, 6.5)
+    SetNPCStats(180, 40.0, 45.0)
+    SetNPCAnimations("Idle_Cop", "Walk_Patrol", "Run_Chase", "Arrest", "Death")
+    StartPatrolRoute()
+end
+
+function StartPatrolRoute()
+    local nextPoint = patrolPoints[currentPatrolIndex]
+    MoveTo(nextPoint.x, nextPoint.y, nextPoint.z)
+    SetNPCState("WALKING")
+end
+
+function OnUpdate(dt)
+    local mx, my, mz = GetPosition()
+    
+    -- PRIORITY 1: Respond to crimes
+    local criminalID, crimeDist = FindNearestEntity("Criminal", 50.0)
+    
+    if criminalID ~= nil and crimeDist < 30.0 then
+        investigating = true
+        pursuitMode = true
+        
+        local cx, cy, cz = GetEntityPosition(criminalID)
+        local distance = GetDistance(mx, my, mz, cx, cy, cz)
+        
+        if distance < 2.5 then
+            SetNPCState("ATTACKING")
+            PlayAnim("Arrest")
+            print("[POLICE] Attempting arrest!")
+        elseif distance < 15.0 then
+            SetNPCTarget(criminalID)
+            SetNPCState("RUNNING")
+            PlayAnim("Run_Chase")
+            MoveTo(cx, cy, cz)
+        else
+            SetNPCState("RUNNING")
+            MoveTo(cx, cy, cz)
+        end
+        return
+    end
+    
+    -- PRIORITY 2: Normal patrol
+    if not investigating and not pursuitMode then
+        local currentPoint = patrolPoints[currentPatrolIndex]
+        local distToPoint = GetDistance(mx, my, mz, 
+                                        currentPoint.x, 
+                                        currentPoint.y, 
+                                        currentPoint.z)
+        
+        if distToPoint < 2.0 then
+            currentPatrolIndex = currentPatrolIndex + 1
+            if currentPatrolIndex > #patrolPoints then
+                currentPatrolIndex = 1
+            end
+            StartPatrolRoute()
+        end
+    end
+    
+    -- Give up chase if suspect escapes
+    if pursuitMode and crimeDist > 60.0 then
+        print("[POLICE] Suspect escaped")
+        pursuitMode = false
+        investigating = false
+        SetNPCState("IDLE")
+        StartPatrolRoute()
+    end
+end
+
+--- Example 5: FPS Player Controller ---
+
+local moveSpeed = 8.0
+local sprintSpeed = 12.0
+local jumpForce = 8.0
+local mouseSensitivity = 0.1
+local cameraYaw = 0.0
+local cameraPitch = 0.0
+local isJumping = false
+
+function OnStart()
+    LockMouse(true)
+    SetGravity(true)
+    print("[PLAYER] FPS Controller initialized")
+    print("Controls: WASD = Move, SHIFT = Sprint, SPACE = Jump, ESC = Exit")
+end
+
+function OnUpdate(dt)
+    -- ESC to unlock mouse
+    if IsKeyDown("ESC") then
+        LockMouse(false)
+    end
+    
+    -- Mouse Look
+    local deltaX, deltaY = GetMouseDelta()
+    cameraYaw = cameraYaw + deltaX * mouseSensitivity
+    cameraPitch = cameraPitch + deltaY * mouseSensitivity
+    cameraPitch = Clamp(cameraPitch, -89.0, 89.0)
+    SetRotation(cameraPitch, cameraYaw, 0)
+    
+    -- Movement
+    local currentSpeed = moveSpeed
+    if IsKeyDown("SHIFT") then
+        currentSpeed = sprintSpeed
+    end
+    
+    local px, py, pz = GetPosition()
+    local rotX, rotY, rotZ = GetRotation()
+    local yawRad = rotY * 3.14159 / 180.0
+    
+    local forward = {x = Sin(yawRad), z = Cos(yawRad)}
+    local right = {x = Cos(yawRad), z = -Sin(yawRad)}
+    
+    local moveX = 0
+    local moveZ = 0
+    
+    if IsKeyDown("W") then moveX = moveX + forward.x; moveZ = moveZ + forward.z end
+    if IsKeyDown("S") then moveX = moveX - forward.x; moveZ = moveZ - forward.z end
+    if IsKeyDown("A") then moveX = moveX - right.x; moveZ = moveZ - right.z end
+    if IsKeyDown("D") then moveX = moveX + right.x; moveZ = moveZ + right.z end
+    
+    -- Normalize diagonal movement
+    local moveLength = Sqrt(moveX * moveX + moveZ * moveZ)
+    if moveLength > 0 then
+        moveX = moveX / moveLength
+        moveZ = moveZ / moveLength
+    end
+    
+    Translate(moveX * currentSpeed * dt, 0, moveZ * currentSpeed * dt)
+    
+    -- Jumping
+    if IsKeyDown("SPACE") and IsGrounded() and not isJumping then
+        AddForce(0, jumpForce, 0)
+        isJumping = true
+    end
+    
+    if IsGrounded() then
+        isJumping = false
+    end
+    
+    -- Interaction
+    if IsKeyDown("E") then
+        local npcID, distance = FindNearestEntity("NPC", 3.0)
+        if npcID ~= nil then
+            print("[PLAYER] Interacting with NPC")
+        end
+    end
+end
+
+================================================================================
+14. BEST PRACTICES & TIPS
+================================================================================
+
+PERFORMANCE:
+- Always multiply movement by GetDeltaTime() for frame independence
+- Use FindNearestEntity() with appropriate ranges (don't search entire world)
+- Cache expensive calculations outside update loops
+- Use timers instead of frame counters
+
+NPC DESIGN:
+- Combine personality traits creatively:
+  * High courage + High aggression = Dangerous warrior
+  * High fear + Low courage = Coward who flees
+  * Low aggression + High courage = Defensive guard
+  
+- Use daily schedules to create living worlds:
+  * NPCs go to work, eat, sleep naturally
+  * Add variety with random activities
+  * Make schedules overlap for crowded areas
+
+CRIME SYSTEM:
+- Balance severity with police response:
+  * Minor crimes: Single unit, delayed
+  * Major crimes: Multiple units, immediate
+  * Extreme crimes: Full lockdown
+  
+- Create believable witness reactions:
+  * High fear NPCs flee immediately
+  * Low fear NPCs may investigate
+  * All civilians call police eventually
+
+PATHFINDING:
+- Use MoveTo() for complex navigation
+- Use SetNPCDestination() for simple waypoints
+- Combine with daily schedules for autonomous behavior
+
+COMBAT:
+- Check line of sight before attacking
+- Implement cover-seeking behavior for smart AI
+- Use friends list for team tactics
+- Balance aggression with self-preservation
+
+================================================================================
+15. COMMON PATTERNS
+================================================================================
+
+--- Distance-Based Behavior ---
+local playerID = FindNearestEntity("Player", 50.0)
+if playerID ~= nil then
+    local px, py, pz = GetEntityPosition(playerID)
+    local mx, my, mz = GetPosition()
+    local dist = GetDistance(mx, my, mz, px, py, pz)
+    
+    if dist < 5.0 then
+        SetNPCState("ATTACKING") -- Close: Attack
+    elseif dist < 20.0 then
+        SetNPCState("RUNNING") -- Medium: Chase
+    else
+        SetNPCState("IDLE") -- Far: Idle
+    end
+end
+
+--- Health-Based State Switching ---
+local health = GetNPCHealth()
+if health < 30 then
+    SetNPCState("FLEEING")
+elseif health < 60 then
+    SetNPCPersonality(0.5, 0.6, 0.4) -- Cautious
+end
+
+--- Timed Events ---
+function OnStart()
+    StartTimer("action")
+end
+
+function OnUpdate(dt)
+    if GetTimer("action") > 5.0 then
+        -- Do something every 5 seconds
+        StartTimer("action") -- Reset
+    end
+end
+
+--- Smooth Rotation ---
+local targetYaw = 90
+local currentYaw = 0
+
+function OnUpdate(dt)
+    currentYaw = Lerp(currentYaw, targetYaw, 0.1)
+    SetRotation(0, currentYaw, 0)
+end
+
+================================================================================
+16. TROUBLESHOOTING
+================================================================================
+
+Q: NPC not moving?
+A: Check that MoveTo() or SetNPCDestination() is called and state is not IDLE.
+   Ensure pathfinding system has valid navigation mesh.
+
+Q: Movement too fast/slow?
+A: Always multiply speeds by GetDeltaTime()!
+   Example: Translate(speed * GetDeltaTime(), 0, 0)
+
+Q: Police not responding to crimes?
+A: Check ReportCrime() is being called with correct severity (1-5).
+   Ensure police NPCs exist in scene with "Police" tag.
+
+Q: Daily schedule not working?
+A: Verify time ranges don't overlap unintentionally.
+   Check that in-game time system is active.
+   Activities are sorted by start time automatically.
+
+Q: NPCs walking through walls?
+A: Use MoveTo() instead of SetNPCDestination() for pathfinding.
+   Ensure navigation mesh is properly generated.
+
+Q: Friends attacking each other?
+A: Call MakeFriend() in OnStart() for both NPCs.
+   Check that friendship is mutual (both call MakeFriend).
+
+================================================================================
+QUICK REFERENCE - MOST USED FUNCTIONS
+================================================================================
+
+ESSENTIAL:
+GetDeltaTime()                    -- Frame time
+GetPosition()                     -- Entity position
+SetPosition(x, y, z)              -- Teleport
+Translate(dx, dy, dz)             -- Move
+IsKeyDown(key)                    -- Input check
+FindNearestEntity(tag, range)     -- Find entities
+
+NPC AI:
+SetNPCType(type)                  -- Set NPC archetype
+SetNPCPersonality(agg, fear, cou) -- Personality traits
+SetNPCState(state)                -- Force state change
+AddDailyActivity(...)             -- Schedule activity
+ReportCrime(x, y, z, severity)    -- Report to police
+MoveTo(x, y, z)                   -- Smart pathfinding
+
+PHYSICS:
+SetVelocity(x, y, z)              -- Set velocity
+AddForce(x, y, z)                 -- Apply force
+IsGrounded()                      -- Ground check
+
+MATH:
+GetDistance(x1,y1,z1,x2,y2,z2)    -- 3D distance
+Lerp(a, b, t)                     -- Interpolation
+Clamp(val, min, max)              -- Range clamp
+Random() / Random(min, max)       -- Random number
+
+================================================================================
+END OF API REFERENCE v2.1.0
+================================================================================
