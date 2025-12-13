@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>DVD Salut</title>
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+        background-color: red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #dvdText {
+        position: absolute;
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+        user-select: none;
+    }
+</style>
+</head>
+<body>
+<div id="dvdText">Salut</div>
+
+<script>
+const dvdText = document.getElementById('dvdText');
+let x = Math.random() * (window.innerWidth - dvdText.offsetWidth);
+let y = Math.random() * (window.innerHeight - dvdText.offsetHeight);
+let dx = 3;
+let dy = 3;
+
+// Couleurs aléatoires
+function randomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r},${g},${b})`;
+}
+
+function animate() {
+    x += dx;
+    y += dy;
+
+    if(x + dvdText.offsetWidth >= window.innerWidth || x <= 0) {
+        dx = -dx;
+        document.body.style.backgroundColor = randomColor();
+    }
+    if(y + dvdText.offsetHeight >= window.innerHeight || y <= 0) {
+        dy = -dy;
+        document.body.style.backgroundColor = randomColor();
+    }
+
+    dvdText.style.left = x + "px";
+    dvdText.style.top = y + "px";
+
+    requestAnimationFrame(animate);
+}
+
+// Redimensionnement fenêtre
+window.addEventListener('resize', () => {
+    x = Math.min(x, window.innerWidth - dvdText.offsetWidth);
+    y = Math.min(y, window.innerHeight - dvdText.offsetHeight);
+});
+
+animate();
+</script>
+</body>
+</html>
